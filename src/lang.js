@@ -28,6 +28,10 @@
         return obj && typeof obj === 'object';
     };
 
+    S.isFunction = function (obj) {
+        return typeof obj === 'function';
+    };
+
     if (Object.prototype.getValueByPath) {
         throw new Error('Object.prototype.getValueByPath has already been used!');
     }
@@ -127,6 +131,25 @@
         };
     }
 
+    S.tryExtendStd(Array, 'prototype/remove', function (idxArr) {
+        if (!S.isArray(idxArr)) {
+            idxArr = [idxArr];
+        }
+
+        var ret = [];
+        this.forEach(function (e, i) {
+            if (idxArr.indexOf(i) === -1) {
+                ret.push(e)
+            }
+        });
+
+        return ret;
+    });
+
+    S.tryExtendStd(Array, 'prototype/clone', function () {
+        return this.slice(0);
+    });
+
     S.tryExtendStd(Object, 'prototype/forEach', function (fn, thisObj) {
         for (var p in this) {
             if (this.hasOwnProperty(p))
@@ -174,6 +197,11 @@
         var args = arguments, i = 1, len = args.length, target = args[0], arg, p;
         for (; i < len; i++) {
             arg = args[i];
+
+            if (!arg) {
+                continue;
+            }
+
             for (p in arg) {
                 if (arg.hasOwnProperty(p)) {
                     target[p] = arg[p]
@@ -192,6 +220,13 @@
         sub.prototype = new Fn;
         sub.prototype.constructor = sub;
     };
+
+    if (!window['console']) {
+        window['console'] = {
+            log: function () {
+            }
+        };
+    }
 })();
 
 (function (S) {
@@ -361,3 +396,242 @@
 
     S.tryExtendStd(Date, 'prototype/format', format);
 })(sop);
+
+(function (S) {
+    var defaultPrefix = window.location.protocol + '//' + window.location.host;
+
+    S.loadJs = (function () {
+        var script = document.createElement('script'),
+            regAbsPath = /^https?:\/\//,
+            head = document.getElementsByTagName('head');
+
+        // modern browsers like Chrome41&FF36 will create a head element for the
+        // head missing situation, but I still put a little check here, since I'm
+        // not sure if there are some browsers in mobile devices don't support this
+        // mechanism.
+        if (head.length === 0) {
+            console.log('%c missing head element', 'color: red');
+        }
+
+        head = head[0];
+
+        if ('onload' in script) {
+            script = null;
+
+            return function (url, callback, prefix, debug) {
+                prefix = prefix || defaultPrefix;
+
+                if (!regAbsPath.test(url)) {
+                    if (!prefix) {
+                        throw new Error("relative url: " + url + " but prefix is empty");
+                    } else {
+                        url = prefix + '/' + url;
+                    }
+                }
+
+                var s = document.createElement('script');
+
+                if (debug) {
+                    // OL is abbreviation for onload
+                    console.log('%c \'OL\' loading: ' + url, 'color: #a1882b');
+
+                    s.onload = (function (callback) {
+                        console.log('%c loaded: ' + url, 'color: green');
+                        callback.call(this);
+                    })(callback);
+                } else {
+                    s.onload = callback;
+                }
+
+                s.src = url;
+                head.appendChild(s);
+            };
+        } else {
+            script = null;
+
+            return function (url, callback, prefix, debug) {
+                prefix = prefix || defaultPrefix;
+
+                if (!regAbsPath.test(url)) {
+                    if (!prefix) {
+                        throw new Error("relative url: " + url + " but prefix is empty");
+                    } else {
+                        url = prefix + '/' + url;
+                    }
+                }
+
+                var s = document.createElement('script');
+
+                if (debug) {
+                    // OR is abbreviation for onreadystatechange
+                    console.log('%c \'OR\' loading: ' + url, 'color: yellow');
+
+                    s.onreadystatechange = (function (callback) {
+                        if (this.readyState == 'loaded' || this.readyState == 'complete') {
+                            console.log('%c loaded: ' + url, 'color: green');
+                            callback.call(this);
+                        }
+                    })(callback);
+                } else {
+                    s.onreadystatechange = (function (callback) {
+                        if (this.readyState == 'loaded' || this.readyState == 'complete') {
+                            callback.call(this);
+                        }
+                    })(callback);
+                }
+
+                s.src = url;
+                head.appendChild(s);
+            };
+        }
+    })();
+
+    S.loadJs.defaultPrefix = defaultPrefix;
+})(sop);
+
+(function (S) {
+    var defaultCfg = {
+        name: null,
+        requires: [],
+        init: function () {
+        }
+    };
+
+    var isUrl = function (str) {
+        return str.indexOf('/') !== -1;
+    };
+
+    var define = function (cfg) {
+        cfg = S.extend({}, defaultCfg, cfg);
+        if (cfg.name === null) {
+            throw new Error('module name cannot be empty');
+        }
+
+        var m = modules[cfg.name];
+        if (!m) {
+            m = new Module();
+            m.name = cfg.name;
+
+            modules[m.name] = m;
+        }
+
+        m.init = cfg.init;
+        m.dependencies = m.dependencies.concat(cfg.requires);
+        m.unreadyDependencies = m.dependencies.clone();
+
+        if (m.dependencies.length === 0) {
+            m.tryInit();
+        } else {
+            m.dependencies.forEach(function (mn) {
+                var pm = modules[mn];
+                if (!pm) {
+                    pm = new Module();
+                    if (isUrl(mn)) {
+                        pm.url = mn;
+                    } else {
+                        pm.name = mn;
+                    }
+
+                    pm.dependedBy.push(m.name);
+                    modules[mn] = pm;
+
+                    pm.load();
+                } else {
+                    pm.dependedBy.push(m.name);
+                }
+            });
+        }
+    };
+
+    define.getCurrentWinBaseUrl = function () {
+        return S.loadJs.defaultPrefix;
+    };
+
+    define.debug = false;
+
+    var modules = {};
+
+    var baseUrls = {
+        sop: 'http://example.com/src'
+    };
+
+    define.setBaseUrl = function (root, url) {
+        baseUrls[root] = url;
+        return this;
+    };
+
+    var Module = function () {
+        this.name = null;
+        this.url = null;
+
+        this.dependencies = [];
+        this.dependedBy = [];
+
+        this.unreadyDependencies = [];
+
+        this.init = function () {
+        };
+
+        this.isReady = false;
+
+        this.ref = null;
+    };
+
+    Module.prototype._resolveUrl = function () {
+        if (this.name) {
+            var url = this.name.split('.'), root = url.shift(), prefix = baseUrls[root];
+
+            if (!prefix) {
+                throw new Error('url prefix for root: ' + root + ' does not exist.');
+            }
+
+            this.url = prefix + url.join('/') + '.js';
+        }
+    };
+
+    Module.prototype.notifyDependedBy = function () {
+        this.dependedBy.forEach(function (mn) {
+            modules[mn].tryInit();
+        });
+    };
+
+    Module.prototype.makeInitArgs = function () {
+        var ret = [];
+
+        this.dependencies.forEach(function (mn) {
+            ret.push(modules[mn].ref);
+        });
+
+        return ret;
+    };
+
+    Module.prototype.tryInit = function () {
+        var r = [], m;
+        this.unreadyDependencies.forEach(function (mn, idx) {
+            m = modules[mn];
+            if (m.isReady) {
+                r.push(idx);
+            }
+        });
+
+        this.unreadyDependencies = this.unreadyDependencies.remove(r);
+        if (this.unreadyDependencies.length === 0) {
+            this.ref = this.init.apply(this, this.makeInitArgs());
+            this.notifyDependedBy();
+        }
+    };
+
+    Module.prototype.load = function () {
+        this._resolveUrl();
+        var me = this;
+
+        modules[this.name] = this;
+
+        S.loadJs(this.url, function () {
+            me.isReady = true;
+        }, null, define.debug);
+    };
+
+    window['define'] = define;
+})(sop);
+

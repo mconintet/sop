@@ -7,5 +7,17 @@
 <body>
 
 <script type="text/javascript" src="src/lang.js"></script>
+<script type="text/javascript">
+    define.debug = true;
+
+    define.setBaseUrl('sop', 'sop/src/');
+    define({
+        name: 'sop.test',
+        requires: ['sop.Template'],
+        init: function (Template) {
+            console.log(Template, 'test');
+        }
+    });
+</script>
 </body>
 </html>
