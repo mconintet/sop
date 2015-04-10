@@ -436,8 +436,10 @@
                     console.log('%c \'OL\' loading: ' + url, 'color: #a1882b');
 
                     s.onload = (function (callback) {
-                        console.log('%c loaded: ' + url, 'color: green');
-                        callback.call(this);
+                        return function () {
+                            console.log('%c loaded: ' + url, 'color: green');
+                            callback.call(this);
+                        }
                     })(callback);
                 } else {
                     s.onload = callback;
@@ -467,16 +469,20 @@
                     console.log('%c \'OR\' loading: ' + url, 'color: yellow');
 
                     s.onreadystatechange = (function (callback) {
-                        if (this.readyState == 'loaded' || this.readyState == 'complete') {
-                            console.log('%c loaded: ' + url, 'color: green');
-                            callback.call(this);
-                        }
+                        return function () {
+                            if (this.readyState == 'loaded' || this.readyState == 'complete') {
+                                console.log('%c loaded: ' + url, 'color: green');
+                                callback.call(this);
+                            }
+                        };
                     })(callback);
                 } else {
                     s.onreadystatechange = (function (callback) {
-                        if (this.readyState == 'loaded' || this.readyState == 'complete') {
-                            callback.call(this);
-                        }
+                        return function () {
+                            if (this.readyState == 'loaded' || this.readyState == 'complete') {
+                                callback.call(this);
+                            }
+                        };
                     })(callback);
                 }
 
@@ -490,79 +496,16 @@
 })(sop);
 
 (function (S) {
-    var defaultCfg = {
-        name: null,
-        requires: [],
-        init: function () {
-        }
-    };
-
-    var isUrl = function (str) {
-        return str.indexOf('/') !== -1;
-    };
-
-    var define = function (cfg) {
-        cfg = S.extend({}, defaultCfg, cfg);
-        if (cfg.name === null) {
-            throw new Error('module name cannot be empty');
-        }
-
-        var m = modules[cfg.name];
-        if (!m) {
-            m = new Module();
-            m.name = cfg.name;
-
-            modules[m.name] = m;
-        }
-
-        m.init = cfg.init;
-        m.dependencies = m.dependencies.concat(cfg.requires);
-        m.unreadyDependencies = m.dependencies.clone();
-
-        if (m.dependencies.length === 0) {
-            m.tryInit();
-        } else {
-            m.dependencies.forEach(function (mn) {
-                var pm = modules[mn];
-                if (!pm) {
-                    pm = new Module();
-                    if (isUrl(mn)) {
-                        pm.url = mn;
-                    } else {
-                        pm.name = mn;
-                    }
-
-                    pm.dependedBy.push(m.name);
-                    modules[mn] = pm;
-
-                    pm.load();
-                } else {
-                    pm.dependedBy.push(m.name);
-                }
-            });
-        }
-    };
-
-    define.getCurrentWinBaseUrl = function () {
-        return S.loadJs.defaultPrefix;
-    };
-
-    define.debug = false;
-
     var modules = {};
 
-    var baseUrls = {
-        sop: 'http://example.com/src'
-    };
-
-    define.setBaseUrl = function (root, url) {
-        baseUrls[root] = url;
-        return this;
+    var rootUrls = {
+        sop: 'http://example.com/src/'
     };
 
     var Module = function () {
-        this.name = null;
-        this.url = null;
+        this.name = '';
+        this.url = '';
+        this.isUrlDirect = false;
 
         this.dependencies = [];
         this.dependedBy = [];
@@ -573,20 +516,26 @@
         };
 
         this.isReady = false;
-
-        this.ref = null;
     };
 
     Module.prototype._resolveUrl = function () {
-        if (this.name) {
-            var url = this.name.split('.'), root = url.shift(), prefix = baseUrls[root];
+        if (!this.url) {
+            var url = this.name.split('.'), root = url.shift(), prefix = rootUrls[root];
 
             if (!prefix) {
                 throw new Error('url prefix for root: ' + root + ' does not exist.');
             }
 
             this.url = prefix + url.join('/') + '.js';
+        } else {
+            this.isUrlDirect = true;
         }
+
+        if (this.url[0] === '/') {
+            this.url = this.url.slice(1);
+        }
+
+        return this.url;
     };
 
     Module.prototype.notifyDependedBy = function () {
@@ -606,6 +555,9 @@
     };
 
     Module.prototype.tryInit = function () {
+        if (this.isReady)
+            return;
+
         var r = [], m;
         this.unreadyDependencies.forEach(function (mn, idx) {
             m = modules[mn];
@@ -615,8 +567,11 @@
         });
 
         this.unreadyDependencies = this.unreadyDependencies.remove(r);
+
         if (this.unreadyDependencies.length === 0) {
             this.ref = this.init.apply(this, this.makeInitArgs());
+            this.isReady = true;
+
             this.notifyDependedBy();
         }
     };
@@ -628,8 +583,90 @@
         modules[this.name] = this;
 
         S.loadJs(this.url, function () {
-            me.isReady = true;
+            if (me.isUrlDirect) {
+                me.isReady = true;
+                me.notifyDependedBy();
+            }
         }, null, define.debug);
+    };
+
+    var defaultCfg = {
+        name: null,
+        requires: [],
+        init: function () {
+        }
+    };
+
+    var isUrl = function (str) {
+        return str.indexOf('/') !== -1;
+    };
+
+    var define = function (cfg) {
+        cfg = S.extend({}, defaultCfg, cfg);
+
+        if (cfg.name === null) {
+            throw new Error('module name cannot be empty');
+        }
+
+        var m = modules[cfg.name];
+        if (m && m.isReady) {
+            throw new Error('module with name: ' + cfg.name + ' already exists');
+        }
+
+        if (!m) {
+            m = new Module();
+            m.name = cfg.name;
+            modules[cfg.name] = m;
+        }
+
+        m.dependencies = cfg.requires;
+        m.init = cfg.init;
+
+        var waitLoad = [];
+        m.dependencies.forEach(function (mn) {
+            var pm = modules[mn];
+            if (!pm) {
+                m.unreadyDependencies.push(mn);
+                pm = new Module();
+
+                if (isUrl(mn)) {
+                    pm.url = mn;
+                }
+
+                pm.name = mn;
+                modules[mn] = pm;
+
+                waitLoad.push(pm);
+            } else if (!pm.isReady) {
+                m.unreadyDependencies.push(mn);
+            }
+
+            pm.dependedBy.push(m.name);
+        });
+
+        waitLoad.forEach(function (wm) {
+            wm.load();
+        });
+
+        if (m.unreadyDependencies.length === 0) {
+            m.tryInit();
+        }
+    };
+
+    define.setBaseUrl = function (root, url) {
+        if (url[url.length - 1] !== '/') {
+            url += '/';
+        }
+
+        rootUrls[root] = url;
+
+        return this;
+    };
+
+    define.debug = false;
+
+    define.getModules = function () {
+        return modules;
     };
 
     window['define'] = define;
