@@ -25,29 +25,50 @@
     };
 
     S.isObject = function (obj) {
-        return obj && typeof obj === 'object';
+        return obj && S.type(obj) === '[object Object]';
+    };
+
+    S.isUndefined = function (obj) {
+        return typeof obj === 'undefined';
+    };
+
+    S.isNumber = function (obj) {
+        return typeof obj === 'number';
+    };
+
+    S.isNumeric = function (obj) {
+        var parsed = parseFloat(obj);
+        return !isNaN(parsed) && isFinite(parsed);
+    };
+
+    S.isObjectLike = function (obj) {
+        return typeof obj === 'object';
+    };
+
+    S.isElement = function (obj) {
+        return obj instanceof HTMLElement;
+    };
+
+    S.isArrayLike = function (obj) {
+        return Object.isObjectLike(obj) && obj.hasOwnProperty('length');
+    };
+
+    S.isBoolean = function (obj) {
+        return typeof obj === 'boolean';
     };
 
     S.isFunction = function (obj) {
         return typeof obj === 'function';
     };
 
-    if (Object.prototype.getValueByPath) {
-        throw new Error('Object.prototype.getValueByPath has already been used!');
-    }
-
-    if (Object.prototype.setValueByPath) {
-        throw new Error('Object.prototype.setValueByPath has already been used!');
-    }
-
-    Object.prototype.getValueByPath = function (path, sep) {
+    S.getValueByPath = function (obj, path, sep) {
         sep = sep || '/';
 
         var reg = new RegExp('^' + sep + '|' + sep + '$');
         var regSplit = new RegExp(sep);
 
         path = path.replace(reg, '').split(regSplit);
-        var i = 0, len = path.length, retVal = this, key;
+        var i = 0, len = path.length, retVal = obj, key;
 
         for (; i < len; i++) {
             key = path[i];
@@ -60,10 +81,10 @@
             }
         }
 
-        return retVal;
+        return retVal === undefined ? null : retVal;
     };
 
-    Object.prototype.setValueByPath = function (path, value, sep, autoFill) {
+    S.setValueByPath = function (obj, path, value, sep, autoFill) {
         sep = sep || '/';
 
         var reg = new RegExp('^' + sep + '|' + sep + '$');
@@ -72,7 +93,7 @@
         autoFill = typeof autoFill === 'undefined' ? true : !!autoFill;
 
         path = path.replace(reg, '').split(regSplit);
-        var i = 0, len = path.length, key, tmpObj = this;
+        var i = 0, len = path.length, key, tmpObj = obj;
 
         for (; i < len; ++i) {
             key = path[i];
@@ -94,11 +115,10 @@
         return true;
     };
 
-    S.tryExtendStd = function (dst, path, fn) {
-        if (dst.getValueByPath(path))
-            throw new Error("Failed to extend standard APIs: " + to + " already exists!");
-
-        dst.setValueByPath(path, fn);
+    S.assertEmpty = function (path) {
+        if (S.getValueByPath(window, path, '\\.') !== null) {
+            throw new Error(path + ' is not empty');
+        }
     };
 
     if (!Array.prototype.forEach) {
@@ -131,7 +151,8 @@
         };
     }
 
-    S.tryExtendStd(Array, 'prototype/remove', function (idxArr) {
+    S.assertEmpty('Array.prototype.remove');
+    Array.prototype.remove = function (idxArr) {
         if (!S.isArray(idxArr)) {
             idxArr = [idxArr];
         }
@@ -144,20 +165,23 @@
         });
 
         return ret;
-    });
+    };
 
-    S.tryExtendStd(Array, 'prototype/clone', function () {
+    S.assertEmpty('Array.prototype.clone');
+    Array.prototype.clone = function () {
         return this.slice(0);
-    });
+    };
 
-    S.tryExtendStd(Object, 'prototype/forEach', function (fn, thisObj) {
+    S.assertEmpty('Object.prototype.forEach');
+    Object.prototype.forEach = function (fn, thisObj) {
         for (var p in this) {
             if (this.hasOwnProperty(p))
                 fn.apply(thisObj, [this[p], p, this]);
         }
-    });
+    };
 
-    S.tryExtendStd(Object, 'prototype/indexOf', function (target) {
+    S.assertEmpty('Object.prototype.indexOf');
+    Object.prototype.indexOf = function (target) {
         for (var p in this) {
             if (this.hasOwnProperty(p)) {
                 if (this[p] === target) {
@@ -167,9 +191,10 @@
         }
 
         return -1;
-    });
+    };
 
-    S.tryExtendStd(Object, 'prototype/every', function (fn, thisObj) {
+    S.assertEmpty('Object.prototype.every');
+    Object.prototype.every = function (fn, thisObj) {
         for (var p in this) {
             if (this.hasOwnProperty(p)) {
                 if (fn.apply(thisObj, [this[p], p, this]) === false) {
@@ -177,7 +202,40 @@
                 }
             }
         }
-    });
+    };
+
+    S.assertEmpty('Object.prototype.toQueryString');
+    Object.prototype.toQueryString = function () {
+        var ret = '';
+
+        if (S.isObject(this)) {
+            for (var p in this) {
+                if (this.hasOwnProperty(p) && typeof this[p] !== 'function') {
+                    ret += p + '=' + this[p] + '&';
+                }
+            }
+
+            ret = ret.replace(/&$/, '');
+        } else if (Object.isString(this)) {
+            ret = this;
+        }
+
+        return ret;
+    };
+
+    S.assertEmpty('Object.prototype.keys');
+    Object.prototype.keys = function () {
+        var ret = [];
+
+        if (S.isObject(this)) {
+            for (var p in this) {
+                if (this.hasOwnProperty(p))
+                    ret.push(p);
+            }
+        }
+
+        return ret;
+    };
 
     if (!String.prototype.trim) {
         String.prototype.trim = function () {
@@ -185,13 +243,14 @@
         };
     }
 
-    S.tryExtendStd(String, 'prototype/render', function () {
+    S.assertEmpty('String.prototype.render');
+    String.prototype.render = function () {
         var args = arguments;
 
         return this.replace(/\{([0-9]+)\}/g, function () {
             return args[parseInt(arguments[1])];
         });
-    });
+    };
 
     S.extend = function () {
         var args = arguments, i = 1, len = args.length, target = args[0], arg, p;
@@ -394,7 +453,8 @@
         };
     })();
 
-    S.tryExtendStd(Date, 'prototype/format', format);
+    S.assertEmpty('Date.prototype.format');
+    Date.prototype.format = format;
 })(sop);
 
 (function (S) {
