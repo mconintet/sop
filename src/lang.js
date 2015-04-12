@@ -252,6 +252,11 @@
         });
     };
 
+    S.assertEmpty('String.prototype.toObject');
+    String.prototype.toObject = function () {
+        return JSON.parse(this);
+    };
+
     S.extend = function () {
         var args = arguments, i = 1, len = args.length, target = args[0], arg, p;
         for (; i < len; i++) {
@@ -286,6 +291,13 @@
             }
         };
     }
+
+    S.generateId = (function () {
+        var seed = 0;
+        return function () {
+            return ++seed;
+        };
+    })();
 })();
 
 (function (S) {
@@ -341,6 +353,7 @@
         var listeners = this.getListeners(event), me = this;
 
         listeners.forEach(function (e) {
+            args = S.isArray(args) ? args : [args];
             return e.apply(me, args);
         });
     };

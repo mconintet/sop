@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+<a href="#hello">hello</a>
+<script type="text/javascript" src="../src/lang.js"></script>
+<script type="text/javascript">
+    define.debug = true;
+
+    define.setBaseUrl('sop', 'sop/src/');
+
+    define({
+        name: 'myApp',
+        requires: ['sop.Application', 'sop.Stage', 'sop/vendor/jquery-2.1.3.min.js'],
+        init: function (App, Stage) {
+            var stage = new Stage();
+            stage.route = 'hello';
+            //stage.layout = 'hello world';
+            stage.layoutFromUrl = 'sop/test/views/hello.html';
+            App.registerStage(stage);
+
+            stage = new Stage();
+            stage.route = 'about';
+            stage.layoutFromUrl = 'sop/test/views/about.html';
+            //stage.layout = 'about';
+            App.registerStage(stage);
+
+            stage = new Stage();
+            stage.route = '';
+            stage.layoutFromUrl = 'sop/test/views/default.html';
+            App.registerStage(stage);
+        }
+    });
+</script>
+</body>
+</html>
