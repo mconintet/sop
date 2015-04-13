@@ -11,6 +11,9 @@ define({
             ]);
 
             this.notReadyStage = 0;
+
+            this.previousStage = null;
+            this.currentStage = null;
         };
 
         sop.extendProto(Application, sop.Observable);
@@ -21,10 +24,8 @@ define({
             me.dispatch(me.getCurrentRoute());
 
             window.addEventListener('hashchange', (function () {
-                return function () {
-                    me.dispatch(me.getCurrentRoute());
-                };
-            })());
+                this.dispatch(this.getCurrentRoute());
+            }).bind(this));
 
             return this;
         };
@@ -34,15 +35,28 @@ define({
             return p['path'];
         };
 
+        Application.prototype.getCurrentHashParams = function () {
+            var hash = window.location.hash, p = url.parseHash(hash);
+            return url.parseSearch(p['search']);
+        };
+
         Application.prototype.dispatch = function (route) {
             var stage = this.stages[route];
             if (!stage) {
                 throw new Error('the stage assorted with route: ' + route + ' does not exist');
             }
 
-            stage.fire('beforeShow');
+            this.previousStage = this.currentStage;
+            this.currentStage = stage;
+
+            if (this.previousStage) {
+                this.previousStage.fire('beforeHide');
+                this.previousStage.file('afterHide');
+            }
+
+            this.currentStage.fire('beforeShow');
             document.body.innerHTML = stage.render();
-            stage.fire('afterShow');
+            this.currentStage.fire('afterShow');
         };
 
         Application.prototype.registerStage = function (stage) {
