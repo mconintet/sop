@@ -35,11 +35,6 @@ define({
             return p['path'];
         };
 
-        Application.prototype.getCurrentHashParams = function () {
-            var hash = window.location.hash, p = url.parseHash(hash);
-            return url.parseSearch(p['search']);
-        };
-
         Application.prototype.dispatch = function (route) {
             var stage = this.stages[route];
             if (!stage) {
