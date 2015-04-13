@@ -65,10 +65,27 @@ define({
             return ret;
         };
 
+        var parseSearch = function (str) {
+            if (str[0] === '?') {
+                str = str.slice(1);
+            }
+
+            var ret = {}, kv = str.split('&'), i = 0, len = kv.length, p;
+            for (; i < len; i++) {
+                p = kv[i].split('=');
+                if (p.length > 0) {
+                    ret[p[0]] = decodeURIComponent(p.length > 1 ? p[1] : '');
+                }
+            }
+
+            return ret;
+        };
+
         return {
             Url: Url,
             parse: parse,
-            parseHash: parseHash
+            parseHash: parseHash,
+            parseSearch: parseSearch
         };
     }
 });
