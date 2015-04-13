@@ -24,12 +24,15 @@ define({
                 'beforeHide',
                 'afterHide'
             ]);
+
+            this._hashParams = null;
         };
 
         sop.extendProto(Stage, sop.Observable);
 
         Stage.prototype._init = function () {
             this._layout = new Tpl(this.layout, this.debug).getCTpl();
+            this.on('afterHide', this._destroy.bind(this));
         };
 
         Stage.prototype._resolveUrl = function () {
@@ -78,6 +81,18 @@ define({
             this.fire('afterRender');
 
             return html;
+        };
+
+        Stage.prototype.getHashParams = function () {
+            if (this._hashParams === null) {
+                this._hashParams = sop.App.getCurrentHashParams();
+            }
+
+            return this._hashParams;
+        };
+
+        Stage.prototype._destroy = function () {
+            this._hashParams = null;
         };
 
         return Stage;
