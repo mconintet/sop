@@ -1,8 +1,11 @@
+/**
+ * sop
+ * @namespace sop
+ */
+
 (function () {
-    /**
-     * @exports sop
-     */
-    var S = window['sop'] = {};
+
+    var S = {};
 
     /**
      * Gets the type string of given object. The return will be like one of:
@@ -11,6 +14,8 @@
      * * `[object Array]`
      * * ...
      *
+     * @memberof sop
+     * @function sop.type
      * @param {*} obj Any value to be typed
      * @returns {String} Flag
      */
@@ -20,7 +25,9 @@
 
     /**
      * Estimates if the given object is a Array, it's an alias of `Array.isArray`
-     * @function
+     *
+     * @memberof sop
+     * @function sop.isArray
      * @param {*} obj Any value to be operated
      * @returns {Boolean} Flag
      */
@@ -28,6 +35,9 @@
 
     /**
      * Estimates if the given object is a `String`
+     *
+     * @memberof sop
+     * @function sop.isString
      * @param {*} obj Any value to be operated
      * @returns {boolean} Flag
      */
@@ -37,6 +47,9 @@
 
     /**
      * Estimate if the given object is `undefined`
+     *
+     * @memberof sop
+     * @function sop.isUndefined
      * @param {*} obj Any value to be operated
      * @returns {boolean} Flag
      */
@@ -46,6 +59,9 @@
 
     /**
      * Estimate if the given object is a Object, it will be false if obj is `null`
+     *
+     * @memberof sop
+     * @function sop.isObject
      * @param {*} obj Any value to be operated
      * @returns {boolean} Flag
      */
@@ -55,6 +71,9 @@
 
     /**
      * Estimates if the given object is a `Number`
+     *
+     * @memberof sop
+     * @function sop.isNumber
      * @param {*} obj Any value to be operated
      * @returns {boolean} Flag
      */
@@ -64,6 +83,9 @@
 
     /**
      * Estimates if the given object is Numeric
+     *
+     * @memberof sop
+     * @function sop.isNumeric
      * @param {*} obj Any value to be operated
      * @returns {boolean} Flag
      */
@@ -75,6 +97,8 @@
     /**
      * Estimates if the given object is ObjectLike, it will be true if obj is `null`.
      *
+     * @memberof sop
+     * @function sop.isObjectLike
      * @param {*} obj Any value to be operated
      * @returns {boolean} Flag
      */
@@ -84,6 +108,9 @@
 
     /**
      * Estimates if the given object is `HTMLElement`
+     *
+     * @memberof sop
+     * @function sop.isElement
      * @param {*} obj Any value to be operated
      * @returns {boolean} Flag
      */
@@ -93,6 +120,9 @@
 
     /**
      * Estimates if the given object is `Boolean`
+     *
+     * @memberof sop
+     * @function sop.isBoolean
      * @param {*} obj any value to be operated
      * @returns {boolean} Flag
      */
@@ -102,6 +132,9 @@
 
     /**
      * Estimates if the given object is `Function`
+     *
+     * @memberof sop
+     * @function isFunction
      * @param {*} obj Any value to be operated
      * @returns {boolean} Flag
      */
@@ -123,6 +156,8 @@
      *     var v = sop.getValueByPath(obj, 'a/b/c');
      *     console.log(v); // v is 1
      *
+     * @memberof sop
+     * @function sop.getValueByPath
      * @param obj {Object} Object to be operated
      * @param path {String} Path of the value
      * @param {String} [sep=/] - Separator char of path string, if the separator is special in regexp then you need to quote it by yourself
@@ -171,6 +206,8 @@
      *     // }
      *
      *
+     * @memberof sop
+     * @function sop.setValueByPath
      * @param obj {Object} Object to be operated
      * @param path {String} Path string
      * @param value {*} Value to be set
@@ -214,6 +251,9 @@
 
     /**
      * Asserts the value of given path on global object must be empty, otherwise throw an error.
+     *
+     * @memberof sop
+     * @function sop.assertEmpty
      * @param path {String} Path string
      */
     S.assertEmpty = function (path) {
@@ -235,6 +275,8 @@
      *      a = [1, 2 , 3];
      *     sop.aRemove(a, [0]);    // a => [2, 3]
      *
+     * @memberof sop
+     * @function sop.aRemove
      * @param arr {Array} Array to be operated
      * @param idxArr {Array|Number} Array of indexes or one index
      * @returns {Array} Result
@@ -261,6 +303,8 @@
      * The `fn` accepts an optional parameter `thisObj`,
      * which you can pass in a different object to be used as the `this` reference within the function.
      *
+     * @memberof sop
+     * @function sop.oForEach
      * @param obj {Object} Object to be iterated on
      * @param fn {Function} Processing function
      * @param {Object} [thisObj={}] Default is an new empty object
@@ -275,6 +319,8 @@
     /**
      * Tries to find out the key of target in given object, return `-1` if nothing found.
      *
+     * @memberof sop
+     * @function sop.oIndexOf
      * @param obj {Object} Object to be iterated on
      * @param target {*} Any value want to be indexed
      * @returns {String|Number} Found key or -1 when nothing found
@@ -297,6 +343,8 @@
      * The `fn` accepts an optional parameter `thisObj`,
      * which you can pass in a different object to be used as the `this` reference within the function.
      *
+     * @memberof sop
+     * @function sop.oEvery
      * @param obj {Object} Object to be iterated on
      * @param fn {Function} Processing function
      * @param {Object} [thisObj={}] Default is an new empty object
@@ -315,6 +363,8 @@
      * Converts an object into a query string and return it, doesn't change the original object.
      * Return object directly if it's already a string.
      *
+     * @memberof sop
+     * @function sop.oToQueryString
      * @param obj {Object} Object to be iterated on
      * @returns {string} Query string
      */
@@ -339,6 +389,8 @@
     /**
      * Extracts all the keys in given object and then return them into an array.
      *
+     * @memberof sop
+     * @function sop.oKeys
      * @param obj {Object} Object to be iterated on
      * @returns {Array} Keys
      */
@@ -361,6 +413,8 @@
      *     sop.sFormat('Hello, {0} - {1}', 'world', 2015);
      *     // output => 'Hello, world - 2015'
      *
+     * @memberof sop
+     * @function sop.sFormat
      * @param str {String} Template string
      * @param {...*} obj - Filler values
      * @returns {string} Processed string
@@ -376,6 +430,8 @@
     /**
      * Converts a string into Object by using `JSON.parse`
      *
+     * @memberof sop
+     * @function sop.sToObject
      * @param str {String} String to be operated
      * @returns {*} Return value
      * @throws Will throws an error if string is not a valid JSON style.
@@ -390,6 +446,8 @@
      * The `fn` accepts an optional parameter `thisObj`,
      * which you can pass in a different object to be used as the `this` reference within the function.
      *
+     * @memberof sop
+     * @function sop.fDelay
      * @param fn {Function} Function need to be executed
      * @param after {Number} After time, unit is millisecond
      * @param {Object} [thisObj={}] - `this` reference within the `fn`
@@ -402,6 +460,8 @@
     /**
      * Merges data of `src`s into `dst`, will change `dst` **directly**.
      *
+     * @memberof sop
+     * @function sop.extend
      * @param dst {Object} Destination object
      * @param src {...*} Source Objects
      * @returns {Object} Destination object
@@ -428,6 +488,8 @@
     /**
      * Extends the prototype of given function
      *
+     * @memberof sop
+     * @function sop.extendProto
      * @param sub {Function} Function whose prototype will be extended
      * @param parent {Function} Function whose prototype will be used to extend the prototype of `sub`
      */
@@ -450,7 +512,8 @@
     /**
      * Get an auto-increased id
      *
-     * @function
+     * @memberof sop
+     * @function sop.generateId
      * @return {Number} An auto-increased id
      */
     S.generateId = (function () {
@@ -459,11 +522,14 @@
             return ++seed;
         };
     })();
+
+    window['sop'] = S;
 })();
 
 (function (S) {
     /**
-     * @alias sop.Observable
+     * @exports Observable
+     * @memberof sop
      * @constructor
      */
     var Observable = function () {
@@ -957,8 +1023,8 @@
      *
      * @global
      * @param cfg {Object}
-     * @param {string} cfg.name - The name of new module or class
-     * @param {string} [cfg.requires=[]] - The dependencies of current new module or class
+     * @param {String} cfg.name - The name of new module or class
+     * @param {Array} [cfg.requires=[]] - The dependencies of current new module or class
      * @param {Function} cfg.init - The function to init module or class, it will be run once all the dependencies has been resolved
      */
     var define = function (cfg) {

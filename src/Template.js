@@ -1,6 +1,14 @@
 define({
     name: 'sop.Template',
     init: function () {
+        /**
+         * Supports a php style template in javascript
+         *
+         * @memberof sop
+         * @param strTpl {String} Template string
+         * @param debug {Boolean} Flag of debug
+         * @constructor
+         */
         var Template = function (strTpl, debug) {
             this.strTpl = strTpl || '';
             this.cTpl = null;
@@ -133,6 +141,11 @@ define({
             this.cTpl = new Template.CTpl(processed);
         };
 
+        /**
+         * Gets compiled template instance
+         *
+         * @returns {sop.Template.CTpl}
+         */
         Template.prototype.getCTpl = function () {
             if (this.cTpl === null) {
                 this._process();
@@ -141,10 +154,24 @@ define({
             return this.cTpl;
         };
 
+        /**
+         * Compiled template
+         *
+         * @param processed {Function} Compiled function
+         * @constructor
+         */
         Template.CTpl = function (processed) {
             this.processed = processed;
         };
 
+        /**
+         * Renders template with given context
+         *
+         * @memberof sop.Template.CTpl
+         * @function sop.Template.CTpl.prototype.render
+         * @param context {Object} Context within render
+         * @returns {String} Rendered string
+         */
         Template.CTpl.prototype.render = function (context) {
             return this.processed(context);
         };

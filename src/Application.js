@@ -1,7 +1,11 @@
 define({
     name: 'sop.Application',
-    requires: ['sop.url'],
-    init: function (url) {
+    requires: ['sop.Url'],
+    init: function (Url) {
+        /**
+         * @memberof sop
+         * @constructor
+         */
         var Application = function () {
             sop.Observable.call(this);
             this.stages = {};
@@ -18,6 +22,11 @@ define({
 
         sop.extendProto(Application, sop.Observable);
 
+        /**
+         * Runs application itself, it observes 'hashchange' event.
+         *
+         * @returns {sop.Application}
+         */
         Application.prototype.run = function () {
             var me = this;
 
@@ -30,11 +39,21 @@ define({
             return this;
         };
 
+        /**
+         * Gets current route, the route is a part of hash string in current url
+         *
+         * @returns {String} Path string
+         */
         Application.prototype.getCurrentRoute = function () {
-            var hash = window.location.hash, p = url.parseHash(hash);
+            var hash = window.location.hash, p = Url.parseHash(hash);
             return p['path'];
         };
 
+        /**
+         * Dispatches route, shows the stage associative with given route
+         *
+         * @param route {String} Route string
+         */
         Application.prototype.dispatch = function (route) {
             var stage = this.stages[route];
             if (!stage) {
@@ -54,6 +73,11 @@ define({
             this.currentStage.fire('afterShow');
         };
 
+        /**
+         * Registers stage with app, app will init the registered stage automatically
+         *
+         * @param stage
+         */
         Application.prototype.registerStage = function (stage) {
             this.stages[stage.route] = stage;
             this.notReadyStage++;

@@ -2,6 +2,10 @@ define({
     name: 'sop.Stage',
     requires: ['sop.Template', 'sop.Ajax', 'sop.Message'],
     init: function (Tpl, Ajax, Msg) {
+        /**
+         * @memberof sop
+         * @constructor
+         */
         var Stage = function () {
             sop.Observable.call(this);
 
@@ -45,6 +49,9 @@ define({
             }
         };
 
+        /**
+         * Initializes stage, it will be called automatically once stage has been registered by `sop.App.registerStage`
+         */
         Stage.prototype.init = function () {
             if (this.isReady)
                 return;
@@ -74,6 +81,12 @@ define({
             }
         };
 
+        /**
+         * Get rendered html of stage, it will be called automatically when stages are interacting
+         *
+         * @param context {Object} Context within render
+         * @returns {String} Rendered html
+         */
         Stage.prototype.render = function (context) {
             var html;
             this.fire('beforeRender');
@@ -83,10 +96,21 @@ define({
             return html;
         };
 
+        /**
+         * Get message of this stage
+         *
+         * @returns {sop.Message}
+         */
         Stage.prototype.getMessage = function () {
             return Msg.fromHash();
         };
 
+        /**
+         * Add auto-abort task, auto-abort task will be abort automatically if it's still running after
+         * it's associative stage has been hidden
+         *
+         * @param task
+         */
         Stage.prototype.addAutoAbortTask = function (task) {
             this._autoAbortTasks.push(task);
         };

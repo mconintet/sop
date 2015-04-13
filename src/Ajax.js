@@ -15,6 +15,23 @@ define({
             timeout: 0
         };
 
+        /**
+         * @class
+         * @memberof sop
+         * @param cfg
+         * @param {String} cfg.url Url to load resource from
+         * @param {String} [cfg.type=GET] Request type
+         * @param {Boolean} [cfg.async=true] Uses async or not, default is async
+         * @param {Object|String} [cfg.data={}] Request params, default is an new empty object
+         * @param {String} [cfg.dataType=json] Type of response text. Response text will be converted into object if this value
+         * is 'json' and default value is 'json'. Another optional value is 'string'.
+         * @param {Function} [cfg.before=null] Callback will be executed before sending
+         * @param {Function} [cfg.success=null] Callback will be executed once succeed
+         * @param {Function} [cfg.complete=null] Callback will be executed once completed
+         * @param {Function} [cfg.error=null] Callback will be executed once error occurred
+         * @param {Function} [cfg.abort=null] Callback will be executed once aborted
+         * @param {Number} [cfg.timeout=0] Timeout of requesting, default is '0' it means no timeout
+         */
         var Ajax = function (cfg) {
             sop.Observable.call(this);
 
@@ -116,31 +133,56 @@ define({
             this._isStopped = true;
         };
 
+        /**
+         * Start to send request to remote server
+         */
         Ajax.prototype.send = function () {
             this._initXhr();
             this.fire('before');
 
-            this.xhr.send(this.data);
             Ajax.aliveAjaxStore.add(this);
+            this.xhr.send(this.data);
 
             if (this.timeout) {
                 this.timeoutHandler = this._onAbort.delay(this.timeout, this);
             }
         };
 
+        /**
+         * Ajax is stopped or not
+         * @returns {boolean}
+         */
         Ajax.prototype.isStopped = function () {
             return this._isStopped;
         };
 
+        /**
+         * Abort this ajax request
+         */
         Ajax.prototype.abort = function () {
             this.xhr.abort();
             this._onAbort();
         };
 
+        /**
+         * @type {sop.Ajax.aliveAjaxStore}
+         */
         Ajax.aliveAjaxStore = (function () {
             var store = {};
 
-            return {
+            return /** @alias module:sop.Ajax.aliveAjaxStore */{
+                /**
+                 * Add alive ajax, this method will be called automatically before sending, so if you want to add your own
+                 * ajax you should follow steps like below:
+                 *
+                 *     var ajax = new Ajax(cfg);
+                 *     // adding must before sending
+                 *     sop.Ajax.aliveAjaxStore.add(ajax);
+                 *     ajax.send();
+                 *
+                 * @param ajax {sop.Ajax} Ajax to be added
+                 * @returns {sop.Ajax.aliveAjaxStore}
+                 */
                 add: function (ajax) {
                     if (store[ajax.id]) {
                         throw new Error('ajax with id: ' + ajax.id + ' already exists');
@@ -149,23 +191,46 @@ define({
                     store[ajax.id] = ajax;
                     return this;
                 },
+                /**
+                 * Remote ajax
+                 * @param ajax {sop.Ajax} Ajax to be removed
+                 * @returns {sop.Ajax.aliveAjaxStore}
+                 */
                 remove: function (ajax) {
                     delete store[ajax.id];
                     return this;
                 },
+                /**
+                 * Clear internal store
+                 *
+                 * @returns {sop.Ajax.aliveAjaxStore}
+                 */
                 clear: function () {
                     store = {};
                     return this;
                 },
+                /**
+                 * Return internal store
+                 *
+                 * @returns {{}} Internal store
+                 */
                 all: function () {
                     return store;
                 },
+                /**
+                 * Count of all alive requests
+                 *
+                 * @returns {Number} Count
+                 */
                 count: function () {
-                    return store.keys().length;
+                    return sop.oKeys(store).length;
                 }
             };
         })();
 
+        /**
+         * Abort all alive ajax requests
+         */
         Ajax.abort = function () {
             var allAliveAjax = this.aliveAjaxStore.all();
             allAliveAjax.each(function (ajax) {
@@ -173,6 +238,25 @@ define({
             });
         };
 
+        /**
+         * Create new ajax
+         *
+         * @param cfg
+         * @param {String} cfg.url Url to load resource from
+         * @param {String} [cfg.type=GET] Request type
+         * @param {Boolean} [cfg.async=true] Uses async or not, default is async
+         * @param {Object|String} [cfg.data={}] Request params, default is an new empty object
+         * @param {String} [cfg.dataType=json] Type of response text. Response text will be converted into object if this value
+         * is 'json' and default value is 'json'. Another optional value is 'string'.
+         * @param {Function} [cfg.before=null] Callback will be executed before sending
+         * @param {Function} [cfg.success=null] Callback will be executed once succeed
+         * @param {Function} [cfg.complete=null] Callback will be executed once completed
+         * @param {Function} [cfg.error=null] Callback will be executed once error occurred
+         * @param {Function} [cfg.abort=null] Callback will be executed once aborted
+         * @param {Number} [cfg.timeout=0] Timeout of requesting, default is '0' it means no timeout
+         * @param cfg
+         * @returns {Ajax}
+         */
         Ajax.create = function (cfg) {
             return new Ajax(cfg);
         };
