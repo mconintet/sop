@@ -268,6 +268,11 @@
         };
     }
 
+    S.assertEmpty('Function.prototype.delay');
+    Function.prototype.delay = function (timeout, thisObj) {
+        return setTimeout(this.bind(thisObj), timeout);
+    };
+
     S.extend = function () {
         var args = arguments, i = 1, len = args.length, target = args[0], arg, p;
         for (; i < len; i++) {
