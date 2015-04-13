@@ -5,41 +5,40 @@
     var S = window['sop'] = {};
 
     /**
-     * Get the type string of given object. The return will be like one of:
+     * Gets the type string of given object. The return will be like one of:
      *
      * * `[object Object]`
      * * `[object Array]`
      * * ...
      *
-     * @param {Object} obj object to be typed
-     * @returns {String}
+     * @param {*} obj Any value to be typed
+     * @returns {String} Flag
      */
     S.type = function (obj) {
         return Object.prototype.toString.call(obj);
     };
 
     /**
-     * Estimate if the given object is a Array, if the native method `Array.isArray` is available then use it otherwise
-     * use the return value from {@link sop.type}
+     * Estimates if the given object is a Array, it's an alias of `Array.isArray`
      * @function
-     * @param {Object} object object to be operated
-     * @returns {Boolean}
+     * @param {*} obj Any value to be operated
+     * @returns {Boolean} Flag
      */
     S.isArray = Array.isArray;
 
     /**
-     * Estimate if the given object is a String
-     * @param obj {Object} object to be operated
-     * @returns {boolean}
+     * Estimates if the given object is a `String`
+     * @param {*} obj Any value to be operated
+     * @returns {boolean} Flag
      */
     S.isString = function (obj) {
         return typeof obj === 'string';
     };
 
     /**
-     * Estimate if the given object is Undefined
-     * @param obj {Object} object to be operated
-     * @returns {boolean}
+     * Estimate if the given object is `undefined`
+     * @param {*} obj Any value to be operated
+     * @returns {boolean} Flag
      */
     S.isUndefined = function (obj) {
         return typeof  obj === 'undefined';
@@ -47,26 +46,26 @@
 
     /**
      * Estimate if the given object is a Object, it will be false if obj is `null`
-     * @param obj {Object} object to be operated
-     * @returns {boolean}
+     * @param {*} obj Any value to be operated
+     * @returns {boolean} Flag
      */
     S.isObject = function (obj) {
         return obj && S.type(obj) === '[object Object]';
     };
 
     /**
-     * Estimate if the given object is a Number
-     * @param obj {Object} object to be operated
-     * @returns {boolean}
+     * Estimates if the given object is a `Number`
+     * @param {*} obj Any value to be operated
+     * @returns {boolean} Flag
      */
     S.isNumber = function (obj) {
         return typeof obj === 'number';
     };
 
     /**
-     * Estimate if the given object is Numeric
-     * @param obj {Object} object to be operated
-     * @returns {boolean}
+     * Estimates if the given object is Numeric
+     * @param {*} obj Any value to be operated
+     * @returns {boolean} Flag
      */
     S.isNumeric = function (obj) {
         var parsed = parseFloat(obj);
@@ -74,44 +73,44 @@
     };
 
     /**
-     * Estimate if the given object is ObjectLike, it will be true if obj is `null`.
+     * Estimates if the given object is ObjectLike, it will be true if obj is `null`.
      *
-     * @param obj {Object} object to be operated
-     * @returns {boolean}
+     * @param {*} obj Any value to be operated
+     * @returns {boolean} Flag
      */
     S.isObjectLike = function (obj) {
         return typeof obj === 'object';
     };
 
     /**
-     * Estimate if the given object is HTMLElement
-     * @param obj {Object} object to be operated
-     * @returns {boolean}
+     * Estimates if the given object is `HTMLElement`
+     * @param {*} obj Any value to be operated
+     * @returns {boolean} Flag
      */
     S.isElement = function (obj) {
         return obj instanceof HTMLElement;
     };
 
     /**
-     * Estimate if the given object is Boolean
-     * @param obj {Object} object to be operated
-     * @returns {boolean}
+     * Estimates if the given object is `Boolean`
+     * @param {*} obj any value to be operated
+     * @returns {boolean} Flag
      */
     S.isBoolean = function (obj) {
         return typeof obj === 'boolean';
     };
 
     /**
-     * Estimate if the given object is Function
-     * @param obj {Object} object to be operated
-     * @returns {boolean}
+     * Estimates if the given object is `Function`
+     * @param {*} obj Any value to be operated
+     * @returns {boolean} Flag
      */
     S.isFunction = function (obj) {
         return typeof obj === 'function';
     };
 
     /**
-     * Get the value of obj by path:
+     * Gets the value of obj by path:
      *
      *     var obj = {
      *          a : {
@@ -124,9 +123,9 @@
      *     var v = sop.getValueByPath(obj, 'a/b/c');
      *     console.log(v); // v is 1
      *
-     * @param obj {Object} object to be operated
-     * @param path {String} path of the value
-     * @param {String} [sep=/] - separator char of path string, if the separator is special in regexp then you need to quote it by yourself
+     * @param obj {Object} Object to be operated
+     * @param path {String} Path of the value
+     * @param {String} [sep=/] - Separator char of path string, if the separator is special in regexp then you need to quote it by yourself
      *
      *     var v = sop.getValueByPath(obj, 'a.b.c', '\\.');
      *
@@ -156,7 +155,7 @@
     };
 
     /**
-     * Set the value of obj by path:
+     * Sets the value of obj by path:
      *
      *     var obj = {};
      *     sop.setValueByPath(obj, 'a/b/c', 1);
@@ -172,14 +171,14 @@
      *     // }
      *
      *
-     * @param obj {Object} object to be operated
-     * @param path {String} path string
-     * @param value value to be set
-     * @param {string} [sep=/] - separator char of path string, if the separator is special in regexp then you need to quote it by yourself
+     * @param obj {Object} Object to be operated
+     * @param path {String} Path string
+     * @param value {*} Value to be set
+     * @param {string} [sep=/] - Separator char of path string, if the separator is special in regexp then you need to quote it by yourself
      *
      *     sop.setValueByPath(obj, 'a.b.c', 1, '\\.');
      *
-     * @param {boolean} [autoFill=true] flag whether creating parent path automatically, on in default
+     * @param {boolean} [autoFill=true] Flag whether creating parent path automatically, on in default
      * @returns {boolean} Flag the operating is successful or failed
      */
     S.setValueByPath = function (obj, path, value, sep, autoFill) {
@@ -214,8 +213,8 @@
     };
 
     /**
-     * Assert the value of given path on global object must be empty, otherwise throw an error.
-     * @param path {String} path string
+     * Asserts the value of given path on global object must be empty, otherwise throw an error.
+     * @param path {String} Path string
      */
     S.assertEmpty = function (path) {
         if (S.getValueByPath(window, path, '\\.') !== null) {
@@ -223,25 +222,23 @@
         }
     };
 
-    S.assertEmpty('Array.prototype.remove');
     /**
-     * @function
+     * Removes items from array by their indexes, just pass index itself if there is only one item needed to be removed.
+     * This function will not modify the original array.
+     *
+     *     var a = [1, 2 , 3];
+     *     S.aRemove(a, [0, 1]); // a => [3]
+     *
+     *     a = [1, 2 , 3];
+     *     sop.aRemove(a, 0);      // a => [2, 3]
+     *
+     *      a = [1, 2 , 3];
+     *     sop.aRemove(a, [0]);    // a => [2, 3]
+     *
+     * @param arr {Array} Array to be operated
+     * @param idxArr {Array|Number} Array of indexes or one index
+     * @returns {Array} Result
      */
-    Array.prototype.remove = function (idxArr) {
-        if (!S.isArray(idxArr)) {
-            idxArr = [idxArr];
-        }
-
-        var ret = [];
-        this.forEach(function (e, i) {
-            if (idxArr.indexOf(i) === -1) {
-                ret.push(e)
-            }
-        });
-
-        return ret;
-    };
-
     S.aRemove = function (arr, idxArr) {
         if (!S.isArray(idxArr)) {
             idxArr = [idxArr];
@@ -257,13 +254,31 @@
         return ret;
     };
 
+    /**
+     * Iterates through the array and executes function `fn` on each of its element.
+     * The processing function cannot return a value, so the result must be handled immediately.
+     *
+     * The `fn` accepts an optional parameter `thisObj`,
+     * which you can pass in a different object to be used as the `this` reference within the function.
+     *
+     * @param obj {Object} Object to be iterated on
+     * @param fn {Function} Processing function
+     * @param {Object} [thisObj={}] Default is an new empty object
+     */
     S.oForEach = function (obj, fn, thisObj) {
         for (var p in obj) {
             if (obj.hasOwnProperty(p))
-                fn.apply(thisObj, [obj[p], p, obj]);
+                fn.apply(thisObj || {}, [obj[p], p, obj]);
         }
     };
 
+    /**
+     * Tries to find out the key of target in given object, return `-1` if nothing found.
+     *
+     * @param obj {Object} Object to be iterated on
+     * @param target {*} Any value want to be indexed
+     * @returns {String|Number} Found key or -1 when nothing found
+     */
     S.oIndexOf = function (obj, target) {
         for (var p in obj) {
             if (obj.hasOwnProperty(p)) {
@@ -276,16 +291,33 @@
         return -1;
     };
 
+    /**
+     * Traverses an array and will stop when the return value of `fn` fully equals `false`.
+     *
+     * The `fn` accepts an optional parameter `thisObj`,
+     * which you can pass in a different object to be used as the `this` reference within the function.
+     *
+     * @param obj {Object} Object to be iterated on
+     * @param fn {Function} Processing function
+     * @param {Object} [thisObj={}] Default is an new empty object
+     */
     S.oEvery = function (obj, fn, thisObj) {
         for (var p in obj) {
             if (obj.hasOwnProperty(p)) {
-                if (fn.apply(thisObj, [obj[p], p, obj]) === false) {
+                if (fn.apply(thisObj || {}, [obj[p], p, obj]) === false) {
                     break;
                 }
             }
         }
     };
 
+    /**
+     * Converts an object into a query string and return it, doesn't change the original object.
+     * Return object directly if it's already a string.
+     *
+     * @param obj {Object} Object to be iterated on
+     * @returns {string} Query string
+     */
     S.oToQueryString = function (obj) {
         var ret = '', p;
 
@@ -304,6 +336,12 @@
         return ret;
     };
 
+    /**
+     * Extracts all the keys in given object and then return them into an array.
+     *
+     * @param obj {Object} Object to be iterated on
+     * @returns {Array} Keys
+     */
     S.oKeys = function (obj) {
         var ret = [];
 
@@ -317,7 +355,17 @@
         return ret;
     };
 
-    S.sRender = function (str) {
+    /**
+     * Formats a string anything like `printf` in C
+     *
+     *     sop.sFormat('Hello, {0} - {1}', 'world', 2015);
+     *     // output => 'Hello, world - 2015'
+     *
+     * @param str {String} Template string
+     * @param {...*} obj - Filler values
+     * @returns {string} Processed string
+     */
+    S.sFormat = function (str, obj) {
         var args = arguments;
 
         return str.replace(/\{([0-9]+)\}/g, function () {
@@ -325,15 +373,40 @@
         });
     };
 
+    /**
+     * Converts a string into Object by using `JSON.parse`
+     *
+     * @param str {String} String to be operated
+     * @returns {*} Return value
+     * @throws Will throws an error if string is not a valid JSON style.
+     */
     S.sToObject = function (str) {
         return JSON.parse(str);
     };
 
-    S.fDelay = function (fn, timeout, thisObj) {
-        return setTimeout(fn.bind(thisObj), timeout);
+    /**
+     * Executes `fn` after `after` milliseconds,
+     *
+     * The `fn` accepts an optional parameter `thisObj`,
+     * which you can pass in a different object to be used as the `this` reference within the function.
+     *
+     * @param fn {Function} Function need to be executed
+     * @param after {Number} After time, unit is millisecond
+     * @param {Object} [thisObj={}] - `this` reference within the `fn`
+     * @returns {Number} The timer return by internal calling of `setTimeout`
+     */
+    S.fDelay = function (fn, after, thisObj) {
+        return setTimeout(fn.bind(thisObj || {}), after);
     };
 
-    S.extend = function () {
+    /**
+     * Merges data of `src`s into `dst`, will change `dst` **directly**.
+     *
+     * @param dst {Object} Destination object
+     * @param src {...*} Source Objects
+     * @returns {Object} Destination object
+     */
+    S.extend = function (dst, src) {
         var args = arguments, i = 1, len = args.length, target = args[0], arg, p;
         for (; i < len; i++) {
             arg = args[i];
@@ -352,6 +425,12 @@
         return target;
     };
 
+    /**
+     * Extends the prototype of given function
+     *
+     * @param sub {Function} Function whose prototype will be extended
+     * @param parent {Function} Function whose prototype will be used to extend the prototype of `sub`
+     */
     S.extendProto = function (sub, parent) {
         var Fn = function () {
         };
@@ -368,6 +447,12 @@
         };
     }
 
+    /**
+     * Get an auto-increased id
+     *
+     * @function
+     * @return {Number} An auto-increased id
+     */
     S.generateId = (function () {
         var seed = 0;
         return function () {
@@ -377,11 +462,21 @@
 })();
 
 (function (S) {
+    /**
+     * @alias sop.Observable
+     * @constructor
+     */
     var Observable = function () {
         this._events = {};
         this._listeners = {};
     };
 
+    /**
+     * Registers the event types which will be fired in future
+     *
+     * @param events {String[]|String} Uses array to add multiple events at a time or just event string to add only one.
+     * @returns {Observable} Instance itself
+     */
     Observable.prototype.registerEvents = function (events) {
         if (S.isArray(events)) {
             for (var i = 0, len = events.length; i < len; i++) {
@@ -394,10 +489,22 @@
         return this;
     };
 
+    /**
+     * Checks whether the given event had been registered or not
+     *
+     * @param event {String} Event string
+     * @returns {boolean} Flag
+     */
     Observable.prototype.hasEvent = function (event) {
         return this._events[event] === true;
     };
 
+    /**
+     * Retrieves listeners by event string.
+     *
+     * @param event {String} Event string
+     * @returns {Array} Array of the listeners which associative with given event string
+     */
     Observable.prototype.getListeners = function (event) {
         if (S.isUndefined(this._listeners[event])) {
             this._listeners[event] = [];
@@ -406,6 +513,13 @@
         return this._listeners[event];
     };
 
+    /**
+     * Add listener `fn` to observe `event`
+     *
+     * @param event {String} Event string, it must be registered before calling this method
+     * @param fn {Function} Listener function
+     * @returns {Observable} Instance itself
+     */
     Observable.prototype.on = function (event, fn) {
         if (!this.hasEvent(event))
             throw new Error('Not supported event: ' + event);
@@ -419,26 +533,58 @@
         return this;
     };
 
+    /**
+     * Remove listeners by given event string, will delete all the listeners associative with given event
+     *
+     * @param event {String} Event string
+     * @returns {Observable} Instance itself
+     */
     Observable.prototype.off = function (event) {
         this._listeners[event] = [];
 
         return this;
     };
 
+    /**
+     * Triggers event. It will call the listeners associative with given event one by one.
+     * If one of that listeners return `false`, then it will stop calling the remaining listeners.
+     *
+     * @param event {String} Event string
+     * @param args {Array} Array of arguments to be passed into every listener if possibly
+     */
     Observable.prototype.fire = function (event, args) {
-        var listeners = this.getListeners(event), me = this;
+        var listeners = this.getListeners(event),
+            me = this,
+            i = 0,
+            len = listeners.length;
 
-        listeners.forEach(function (e) {
-            args = S.isArray(args) ? args : [args];
-            return e.apply(me, args);
-        });
+        args = S.isArray(args) ? args : [args];
+
+        for (; i < len; i++) {
+            if (listeners[i].apply(me, args) === false) {
+                break;
+            }
+        }
     };
 
     S['Observable'] = Observable;
 })(sop);
 
 (function (S) {
-    var format = (function () {
+    /**
+     * Converts date into string according some specific characters.
+     *
+     *     var date = new Date('2015/04/13 20:58:54');
+     *     S.dFormat(date, 'Y-m-d H:i:s');
+     *     // out put => '2015-04-13 20:58:54'
+     *
+     * @function
+     * @param {Date} [date=new Date()] Date to be converted into string
+     * @param {String} opt More options characters see:
+     * <a href="http://php.net/manual/en/function.date.php" target="_blank">function.date.php</a>
+     * @return {String} Converted string
+     */
+    S.dFormat = (function () {
         var fnMap = {
             month: ["January", "February", "March",
                 "April", "May", "June", "July", "August",
@@ -535,7 +681,7 @@
         };
 
         return function (date, opt) {
-            if(S.isUndefined(opt)){
+            if (S.isUndefined(opt)) {
                 opt = date;
                 date = new Date();
             }
@@ -545,13 +691,20 @@
             }) : '';
         };
     })();
-
-    S.dFormat = format;
 })(sop);
 
 (function (S) {
-    var defaultPrefix = window.location.protocol + '//' + window.location.host;
+    var homeUrl = window.location.protocol + '//' + window.location.host;
 
+    /**
+     * Loads remote script file by it's url. If `url` is not start with 'http' or 'https' then treat it to be a relative
+     * one and will be concatenated with `prefix`, default `prefix` is current home url.
+     *
+     * @function
+     * @param {String} url Url of script file
+     * @param {String} [prefix=sop.getHomeUrl()] Being used when `url` is relative and it's default value is current home url
+     * @param {Boolean} debug Flags whether output debug information or not.
+     */
     S.loadJs = (function () {
         var script = document.createElement('script'),
             regAbsPath = /^https?:\/\//,
@@ -571,14 +724,10 @@
             script = null;
 
             return function (url, callback, prefix, debug) {
-                prefix = prefix || defaultPrefix;
+                prefix = prefix || homeUrl;
 
                 if (!regAbsPath.test(url)) {
-                    if (!prefix) {
-                        throw new Error("relative url: " + url + " but prefix is empty");
-                    } else {
-                        url = prefix + '/' + url;
-                    }
+                    url = prefix + '/' + url;
                 }
 
                 var s = document.createElement('script');
@@ -604,14 +753,10 @@
             script = null;
 
             return function (url, callback, prefix, debug) {
-                prefix = prefix || defaultPrefix;
+                prefix = prefix || homeUrl;
 
                 if (!regAbsPath.test(url)) {
-                    if (!prefix) {
-                        throw new Error("relative url: " + url + " but prefix is empty");
-                    } else {
-                        url = prefix + '/' + url;
-                    }
+                    url = prefix + '/' + url;
                 }
 
                 var s = document.createElement('script');
@@ -644,7 +789,14 @@
         }
     })();
 
-    S.loadJs.defaultPrefix = defaultPrefix;
+    /**
+     * Retrieves current home url.
+     *
+     * @returns {string} Home url
+     */
+    S.getHomeUrl = function () {
+        return homeUrl;
+    };
 })(sop);
 
 (function (S) {
@@ -718,7 +870,7 @@
             }
         });
 
-        this.unreadyDependencies = this.unreadyDependencies.remove(r);
+        this.unreadyDependencies = S.aRemove(this.unreadyDependencies, r);
 
         if (this.unreadyDependencies.length === 0) {
             this.ref = this.init.apply(this, this.makeInitArgs());
@@ -754,6 +906,61 @@
         return str.indexOf('/') !== -1;
     };
 
+    /**
+     * Define a new module or class.
+     *
+     * Here are some conventions:
+     *
+     * * If defining a new module, the first letter of module name must be lowercase,
+     * if defining a new class, the first letter of class name must be uppercase.
+     *
+     * * One file can contain only one module or class.
+     *
+     * * The file name must be the same as the module or class defined in it.
+     *
+     * * If defining a nested module or class, must create the nested directories with the same name.
+     *
+     * Usage:
+     *
+     * By default `sop` will load modules or classes files respectively and asynchronously
+     * it requires us to set a base url for the root namespace we're using:
+     *
+     *     // create new file named 'world.js' under directory 'hello' and put below code into it
+     *     define({
+     *          name : 'hello.world',
+     *          init : function () {
+     *              console.log('hello init');
+     *
+     *              return {
+     *                  print : function () {
+     *                      console.log('hello world');
+     *                  }
+     *              };
+     *          }
+     *     })
+     *
+     *     // put below into 'hello/index.html'
+     *     define.setBaseUrl('hello', 'http://127.0.0.1/hello')
+     *
+     *     define({
+     *          name : 'myApp',
+     *          requires : ['hello.world'],
+     *          init : function () {
+     *              hello.world.print();
+     *          }
+     *     });
+     *
+     *     // turn on console of browser then open 'hello/index.html'
+     *     // you'll see:
+     *     // hello init
+     *     // hello world
+     *
+     * @global
+     * @param cfg {Object}
+     * @param {string} cfg.name - The name of new module or class
+     * @param {string} cfg.requires - The dependencies of current new module or class
+     * @param {Function} cfg.init - The function to init module or class, it will be run once all the dependencies has been resolved
+     */
     var define = function (cfg) {
         cfg = S.extend({}, defaultCfg, cfg);
 

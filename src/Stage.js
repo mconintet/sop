@@ -41,7 +41,7 @@ define({
                     this.layoutFromUrl = '/' + this.layoutFromUrl;
                 }
 
-                this.layoutFromUrl = sop.loadJs.defaultPrefix + this.layoutFromUrl;
+                this.layoutFromUrl = sop.getHomeUrl() + this.layoutFromUrl;
             }
         };
 

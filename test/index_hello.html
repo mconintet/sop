@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>hello</title>
+</head>
+<body>
+
+<script type="text/javascript" src="../src/core.js"></script>
+<script type="text/javascript">
+    // don't forget to change url to your own when you're testing
+    define.setBaseUrl('hello', 'http://127.0.0.1:8080/sop/test/hello');
+
+    define({
+        name: 'myApp',
+        requires: ['hello.world'],
+        init: function () {
+            hello.world.print();
+        }
+    });
+</script>
+</body>
+</html>
