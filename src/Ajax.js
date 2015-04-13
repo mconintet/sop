@@ -113,7 +113,7 @@ define({
                     }
 
                     me.fire('complete');
-                    Ajax.aliveAjaxStore.remove(me);
+                    Ajax.remove(me);
 
                     this._isStopped = true;
                 };
@@ -128,7 +128,7 @@ define({
             this.fire('abort');
             this.fire('complete');
 
-            Ajax.aliveAjaxStore.remove(this);
+            Ajax.remove(this);
 
             this._isStopped = true;
         };
@@ -140,7 +140,7 @@ define({
             this._initXhr();
             this.fire('before');
 
-            Ajax.aliveAjaxStore.add(this);
+            Ajax.add(this);
             this.xhr.send(this.data);
 
             if (this.timeout) {
@@ -157,89 +157,86 @@ define({
         };
 
         /**
-         * Abort this ajax request
+         * Aborts this ajax request
          */
         Ajax.prototype.abort = function () {
             this.xhr.abort();
             this._onAbort();
         };
 
-        /**
-         * @type {sop.Ajax.aliveAjaxStore}
-         */
-        Ajax.aliveAjaxStore = (function () {
-            var store = {};
-
-            return /** @alias module:sop.Ajax.aliveAjaxStore */{
-                /**
-                 * Add alive ajax, this method will be called automatically before sending, so if you want to add your own
-                 * ajax you should follow steps like below:
-                 *
-                 *     var ajax = new Ajax(cfg);
-                 *     // adding must before sending
-                 *     sop.Ajax.aliveAjaxStore.add(ajax);
-                 *     ajax.send();
-                 *
-                 * @param ajax {sop.Ajax} Ajax to be added
-                 * @returns {sop.Ajax.aliveAjaxStore}
-                 */
-                add: function (ajax) {
-                    if (store[ajax.id]) {
-                        throw new Error('ajax with id: ' + ajax.id + ' already exists');
-                    }
-
-                    store[ajax.id] = ajax;
-                    return this;
-                },
-                /**
-                 * Remote ajax
-                 * @param ajax {sop.Ajax} Ajax to be removed
-                 * @returns {sop.Ajax.aliveAjaxStore}
-                 */
-                remove: function (ajax) {
-                    delete store[ajax.id];
-                    return this;
-                },
-                /**
-                 * Clear internal store
-                 *
-                 * @returns {sop.Ajax.aliveAjaxStore}
-                 */
-                clear: function () {
-                    store = {};
-                    return this;
-                },
-                /**
-                 * Return internal store
-                 *
-                 * @returns {{}} Internal store
-                 */
-                all: function () {
-                    return store;
-                },
-                /**
-                 * Count of all alive requests
-                 *
-                 * @returns {Number} Count
-                 */
-                count: function () {
-                    return sop.oKeys(store).length;
-                }
-            };
-        })();
+        var store = {};
 
         /**
-         * Abort all alive ajax requests
+         * Adds alive ajax, this method will be called automatically before sending, so if you want to add your own
+         * ajax you should follow steps like below:
+         *
+         *     var ajax = new Ajax(cfg);
+         *     // adding must before sending
+         *     sop.Ajax.add(ajax);
+         *     ajax.send();
+         *
+         * @param ajax {sop.Ajax} Ajax to be added
+         * @returns {sop.Ajax}
          */
-        Ajax.abort = function () {
-            var allAliveAjax = this.aliveAjaxStore.all();
-            allAliveAjax.each(function (ajax) {
-                ajax.abort();
-            });
+        Ajax.add = function (ajax) {
+            if (store[ajax.id]) {
+                throw new Error('ajax with id: ' + ajax.id + ' already exists');
+            }
+
+            store[ajax.id] = ajax;
+            return this;
         };
 
         /**
-         * Create new ajax
+         * Removes ajax
+         *
+         * @param ajax {sop.Ajax} Ajax to be removed
+         * @returns {sop.Ajax}
+         */
+        Ajax.remove = function (ajax) {
+            delete store[ajax.id];
+            return this;
+        };
+
+        /**
+         * Clears internal store
+         *
+         * @returns {sop.Ajax}
+         */
+        Ajax.clear = function () {
+            store = {};
+            return this;
+        };
+
+        /**
+         * Returns internal store
+         *
+         * @returns {{}} Internal store
+         */
+        Ajax.all = function () {
+            return store;
+        };
+
+        /**
+         * Gets the count of all alive requests
+         *
+         * @returns {Number} Count
+         */
+        Ajax.count = function () {
+            return sop.oKeys(store).length;
+        };
+
+        /**
+         * Aborts all alive ajax requests
+         */
+        Ajax.abort = function () {
+            sop.oForEach(store, function (ajax) {
+                ajax.abort();
+            })
+        };
+
+        /**
+         * Creates new ajax
          *
          * @param cfg
          * @param {String} cfg.url Url to load resource from
