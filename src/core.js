@@ -958,7 +958,7 @@
      * @global
      * @param cfg {Object}
      * @param {string} cfg.name - The name of new module or class
-     * @param {string} cfg.requires - The dependencies of current new module or class
+     * @param {string} [cfg.requires=[]] - The dependencies of current new module or class
      * @param {Function} cfg.init - The function to init module or class, it will be run once all the dependencies has been resolved
      */
     var define = function (cfg) {
