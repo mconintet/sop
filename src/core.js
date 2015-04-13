@@ -1003,10 +1003,10 @@
      *                  }
      *              };
      *          }
-     *     })
+     *     });
      *
      *     // put below into 'hello/index.html'
-     *     define.setBaseUrl('hello', 'http://127.0.0.1/hello')
+     *     define.setBaseUrl('hello', 'http://127.0.0.1/hello');
      *
      *     define({
      *          name : 'myApp',
