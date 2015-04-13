@@ -13,7 +13,7 @@ define({
 
             delete this['route'];
 
-            var q = this.toQueryString();
+            var q = sop.oToQueryString(this);
             window.location.hash = route + (q ? '?' + q : '');
         };
 

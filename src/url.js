@@ -1,3 +1,7 @@
+/**
+ * @module sop.url
+ */
+
 define({
     name: 'sop.url',
     init: function () {
@@ -89,7 +93,8 @@ define({
             return ret;
         };
 
-        return {
+        return /** @alias module:sop.url */ {
+            /** @class */
             Url: Url,
             parse: parse,
             parseHash: parseHash,

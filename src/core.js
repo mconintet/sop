@@ -1,66 +1,137 @@
 (function () {
-    // register namespace for 'sop'
+    /**
+     * @exports sop
+     */
     var S = window['sop'] = {};
 
+    /**
+     * Get the type string of given object. The return will be like one of:
+     *
+     * * `[object Object]`
+     * * `[object Array]`
+     * * ...
+     *
+     * @param {Object} obj object to be typed
+     * @returns {String}
+     */
     S.type = function (obj) {
         return Object.prototype.toString.call(obj);
     };
 
-    S.isArray = (function () {
-        if (Array.isArray) {
-            return Array.isArray;
-        } else {
-            return function (obj) {
-                return S.type(obj) === '[object Array]';
-            };
-        }
-    })();
+    /**
+     * Estimate if the given object is a Array, if the native method `Array.isArray` is available then use it otherwise
+     * use the return value from {@link sop.type}
+     * @function
+     * @param {Object} object object to be operated
+     * @returns {Boolean}
+     */
+    S.isArray = Array.isArray;
 
+    /**
+     * Estimate if the given object is a String
+     * @param obj {Object} object to be operated
+     * @returns {boolean}
+     */
     S.isString = function (obj) {
         return typeof obj === 'string';
     };
 
+    /**
+     * Estimate if the given object is Undefined
+     * @param obj {Object} object to be operated
+     * @returns {boolean}
+     */
     S.isUndefined = function (obj) {
         return typeof  obj === 'undefined';
     };
 
+    /**
+     * Estimate if the given object is a Object, it will be false if obj is `null`
+     * @param obj {Object} object to be operated
+     * @returns {boolean}
+     */
     S.isObject = function (obj) {
         return obj && S.type(obj) === '[object Object]';
     };
 
-    S.isUndefined = function (obj) {
-        return typeof obj === 'undefined';
-    };
-
+    /**
+     * Estimate if the given object is a Number
+     * @param obj {Object} object to be operated
+     * @returns {boolean}
+     */
     S.isNumber = function (obj) {
         return typeof obj === 'number';
     };
 
+    /**
+     * Estimate if the given object is Numeric
+     * @param obj {Object} object to be operated
+     * @returns {boolean}
+     */
     S.isNumeric = function (obj) {
         var parsed = parseFloat(obj);
         return !isNaN(parsed) && isFinite(parsed);
     };
 
+    /**
+     * Estimate if the given object is ObjectLike, it will be true if obj is `null`.
+     *
+     * @param obj {Object} object to be operated
+     * @returns {boolean}
+     */
     S.isObjectLike = function (obj) {
         return typeof obj === 'object';
     };
 
+    /**
+     * Estimate if the given object is HTMLElement
+     * @param obj {Object} object to be operated
+     * @returns {boolean}
+     */
     S.isElement = function (obj) {
         return obj instanceof HTMLElement;
     };
 
-    S.isArrayLike = function (obj) {
-        return Object.isObjectLike(obj) && obj.hasOwnProperty('length');
-    };
-
+    /**
+     * Estimate if the given object is Boolean
+     * @param obj {Object} object to be operated
+     * @returns {boolean}
+     */
     S.isBoolean = function (obj) {
         return typeof obj === 'boolean';
     };
 
+    /**
+     * Estimate if the given object is Function
+     * @param obj {Object} object to be operated
+     * @returns {boolean}
+     */
     S.isFunction = function (obj) {
         return typeof obj === 'function';
     };
 
+    /**
+     * Get the value of obj by path:
+     *
+     *     var obj = {
+     *          a : {
+     *              b : {
+     *                  c : 1
+     *              }
+     *          }
+     *     }
+     *
+     *     var v = sop.getValueByPath(obj, 'a/b/c');
+     *     console.log(v); // v is 1
+     *
+     * @param obj {Object} object to be operated
+     * @param path {String} path of the value
+     * @param {String} [sep=/] - separator char of path string, if the separator is special in regexp then you need to quote it by yourself
+     *
+     *     var v = sop.getValueByPath(obj, 'a.b.c', '\\.');
+     *
+     * @returns {object|null} If the value does not exists or the value itself is `undefined`, then use `null` to instead be return value.
+     */
     S.getValueByPath = function (obj, path, sep) {
         sep = sep || '/';
 
@@ -84,6 +155,33 @@
         return retVal === undefined ? null : retVal;
     };
 
+    /**
+     * Set the value of obj by path:
+     *
+     *     var obj = {};
+     *     sop.setValueByPath(obj, 'a/b/c', 1);
+     *     console.log(obj);
+     *
+     *     // obj will be
+     *     // {
+     *     //   a : {
+     *     //       b : {
+     *                  c : 1
+     *     //       }
+     *     //   }
+     *     // }
+     *
+     *
+     * @param obj {Object} object to be operated
+     * @param path {String} path string
+     * @param value value to be set
+     * @param {string} [sep=/] - separator char of path string, if the separator is special in regexp then you need to quote it by yourself
+     *
+     *     sop.setValueByPath(obj, 'a.b.c', 1, '\\.');
+     *
+     * @param {boolean} [autoFill=true] flag whether creating parent path automatically, on in default
+     * @returns {boolean} Flag the operating is successful or failed
+     */
     S.setValueByPath = function (obj, path, value, sep, autoFill) {
         sep = sep || '/';
 
@@ -115,43 +213,20 @@
         return true;
     };
 
+    /**
+     * Assert the value of given path on global object must be empty, otherwise throw an error.
+     * @param path {String} path string
+     */
     S.assertEmpty = function (path) {
         if (S.getValueByPath(window, path, '\\.') !== null) {
             throw new Error(path + ' is not empty');
         }
     };
 
-    if (!Array.prototype.forEach) {
-        Array.prototype.forEach = function (fn, thisObj) {
-            for (var i = 0, len = this.length; i < len; i++) {
-                fn.apply(thisObj, [this[i], i, this]);
-            }
-        };
-    }
-
-    if (!Array.prototype.indexOf) {
-        Array.prototype.indexOf = function (target, startIndex) {
-            for (var i = startIndex, len = this.length; i < len; i++) {
-                if (this[i] === target) {
-                    return i;
-                }
-            }
-
-            return -1;
-        };
-    }
-
-    if (!Array.prototype.every) {
-        Array.prototype.every = function (fn, thisObj) {
-            for (var i = 0, len = this.length; i < len; i++) {
-                if (fn.apply(thisObj, [this[i], i, this]) === false) {
-                    break;
-                }
-            }
-        };
-    }
-
     S.assertEmpty('Array.prototype.remove');
+    /**
+     * @function
+     */
     Array.prototype.remove = function (idxArr) {
         if (!S.isArray(idxArr)) {
             idxArr = [idxArr];
@@ -167,24 +242,32 @@
         return ret;
     };
 
-    S.assertEmpty('Array.prototype.clone');
-    Array.prototype.clone = function () {
-        return this.slice(0);
+    S.aRemove = function (arr, idxArr) {
+        if (!S.isArray(idxArr)) {
+            idxArr = [idxArr];
+        }
+
+        var ret = [];
+        arr.forEach(function (e, i) {
+            if (idxArr.indexOf(i) === -1) {
+                ret.push(e)
+            }
+        });
+
+        return ret;
     };
 
-    S.assertEmpty('Object.prototype.forEach');
-    Object.prototype.forEach = function (fn, thisObj) {
-        for (var p in this) {
-            if (this.hasOwnProperty(p))
-                fn.apply(thisObj, [this[p], p, this]);
+    S.oForEach = function (obj, fn, thisObj) {
+        for (var p in obj) {
+            if (obj.hasOwnProperty(p))
+                fn.apply(thisObj, [obj[p], p, obj]);
         }
     };
 
-    S.assertEmpty('Object.prototype.indexOf');
-    Object.prototype.indexOf = function (target) {
-        for (var p in this) {
-            if (this.hasOwnProperty(p)) {
-                if (this[p] === target) {
+    S.oIndexOf = function (obj, target) {
+        for (var p in obj) {
+            if (obj.hasOwnProperty(p)) {
+                if (obj[p] === target) {
                     return p;
                 }
             }
@@ -193,43 +276,40 @@
         return -1;
     };
 
-    S.assertEmpty('Object.prototype.every');
-    Object.prototype.every = function (fn, thisObj) {
-        for (var p in this) {
-            if (this.hasOwnProperty(p)) {
-                if (fn.apply(thisObj, [this[p], p, this]) === false) {
+    S.oEvery = function (obj, fn, thisObj) {
+        for (var p in obj) {
+            if (obj.hasOwnProperty(p)) {
+                if (fn.apply(thisObj, [obj[p], p, obj]) === false) {
                     break;
                 }
             }
         }
     };
 
-    S.assertEmpty('Object.prototype.toQueryString');
-    Object.prototype.toQueryString = function () {
-        var ret = '';
+    S.oToQueryString = function (obj) {
+        var ret = '', p;
 
-        if (S.isObject(this)) {
-            for (var p in this) {
-                if (this.hasOwnProperty(p) && typeof this[p] !== 'function') {
-                    ret += p + '=' + this[p] + '&';
+        if (S.isObject(obj)) {
+            for (p in obj) {
+                if (obj.hasOwnProperty(p) && typeof obj[p] !== 'function') {
+                    ret += p + '=' + obj[p] + '&';
                 }
             }
 
             ret = ret.replace(/&$/, '');
-        } else if (Object.isString(this)) {
-            ret = this;
+        } else if (Object.isString(obj)) {
+            ret = obj;
         }
 
         return ret;
     };
 
-    S.assertEmpty('Object.prototype.keys');
-    Object.prototype.keys = function () {
+    S.oKeys = function (obj) {
         var ret = [];
 
-        if (S.isObject(this)) {
-            for (var p in this) {
-                if (this.hasOwnProperty(p))
+        if (S.isObject(obj)) {
+            for (var p in obj) {
+                if (obj.hasOwnProperty(p))
                     ret.push(p);
             }
         }
@@ -237,40 +317,20 @@
         return ret;
     };
 
-    if (!String.prototype.trim) {
-        String.prototype.trim = function () {
-            return this.replace(/^\s+|\s+$/, '');
-        };
-    }
-
-    S.assertEmpty('String.prototype.render');
-    String.prototype.render = function () {
+    S.sRender = function (str) {
         var args = arguments;
 
-        return this.replace(/\{([0-9]+)\}/g, function () {
-            return args[parseInt(arguments[1])];
+        return str.replace(/\{([0-9]+)\}/g, function () {
+            return args[parseInt(arguments[1]) + 1];
         });
     };
 
-    S.assertEmpty('String.prototype.toObject');
-    String.prototype.toObject = function () {
-        return JSON.parse(this);
+    S.sToObject = function (str) {
+        return JSON.parse(str);
     };
 
-    // capability see: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
-    // since support of IE in mobile device is unknown, so this extends if needed
-    if (!Function.prototype.bind) {
-        Function.prototype.bind = function (thisObj) {
-            var me = this;
-            return function () {
-                me.apply(thisObj, arguments);
-            };
-        };
-    }
-
-    S.assertEmpty('Function.prototype.delay');
-    Function.prototype.delay = function (timeout, thisObj) {
-        return setTimeout(this.bind(thisObj), timeout);
+    S.fDelay = function (fn, timeout, thisObj) {
+        return setTimeout(fn.bind(thisObj), timeout);
     };
 
     S.extend = function () {
@@ -474,16 +534,19 @@
             }
         };
 
-        return function (opt) {
-            var me = this;
+        return function (date, opt) {
+            if(S.isUndefined(opt)){
+                opt = date;
+                date = new Date();
+            }
+
             return opt ? opt.replace(/\b(\w+)\b/g, function (match) {
-                return fnMap[match](me);
+                return fnMap[match](date);
             }) : '';
         };
     })();
 
-    S.assertEmpty('Date.prototype.format');
-    Date.prototype.format = format;
+    S.dFormat = format;
 })(sop);
 
 (function (S) {

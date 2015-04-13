@@ -59,7 +59,7 @@ define({
             if (!sop.isString(this.data) && !sop.isObject(this.data))
                 console.error('opts.data muse be String or Pure Object!');
 
-            this.data = this.data.toQueryString();
+            this.data = sop.oToQueryString(this.data);
 
             if (!sop.isNumeric(this.timeout) || (this.timeout = parseInt(this.timeout)) < 0)
                 console.error('opts.timeout must be positive number!');
@@ -82,7 +82,7 @@ define({
                         if (me.dataType === 'string') {
                             response = this.responseText;
                         } else if (me.dataType === 'json') {
-                            response = this.responseText.toObject();
+                            response = sop.sToObject(this.responseText);
                         }
 
                         if (sop.isUndefined(response) && me.dataType === 'json') {
