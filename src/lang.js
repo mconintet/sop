@@ -643,6 +643,7 @@
 
         if (this.unreadyDependencies.length === 0) {
             this.ref = this.init.apply(this, this.makeInitArgs());
+            S.setValueByPath(window, this.name, this.ref, '\\.');
             this.isReady = true;
 
             this.notifyDependedBy();
