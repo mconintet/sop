@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Stage.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="sop.Ajax.html">Ajax</a><ul class='methods'><li data-type='method'><a href="sop.Ajax.html#.abort">abort</a></li><li data-type='method'><a href="sop.Ajax.html#.create">create</a></li><li data-type='method'><a href="sop.Ajax.html#abort">abort</a></li><li data-type='method'><a href="sop.Ajax.html#isStopped">isStopped</a></li><li data-type='method'><a href="sop.Ajax.html#send">send</a></li></ul></li><li><a href="sop.Application.html">Application</a><ul class='methods'><li data-type='method'><a href="sop.Application.html#dispatch">dispatch</a></li><li data-type='method'><a href="sop.Application.html#getCurrentRoute">getCurrentRoute</a></li><li data-type='method'><a href="sop.Application.html#registerStage">registerStage</a></li><li data-type='method'><a href="sop.Application.html#run">run</a></li></ul></li><li><a href="sop.Message.html">Message</a><ul class='methods'><li data-type='method'><a href="sop.Message.html#.fromHash">fromHash</a></li><li data-type='method'><a href="sop.Message.html#send">send</a></li></ul></li><li><a href="sop.Observable.html">Observable</a><ul class='methods'><li data-type='method'><a href="sop.Observable.html#fire">fire</a></li><li data-type='method'><a href="sop.Observable.html#getListeners">getListeners</a></li><li data-type='method'><a href="sop.Observable.html#hasEvent">hasEvent</a></li><li data-type='method'><a href="sop.Observable.html#off">off</a></li><li data-type='method'><a href="sop.Observable.html#on">on</a></li><li data-type='method'><a href="sop.Observable.html#registerEvents">registerEvents</a></li></ul></li><li><a href="sop.Stage.html">Stage</a><ul class='methods'><li data-type='method'><a href="sop.Stage.html#addAutoAbortTask">addAutoAbortTask</a></li><li data-type='method'><a href="sop.Stage.html#getMessage">getMessage</a></li><li data-type='method'><a href="sop.Stage.html#init">init</a></li><li data-type='method'><a href="sop.Stage.html#render">render</a></li></ul></li><li><a href="sop.Template.html">Template</a><ul class='methods'><li data-type='method'><a href="sop.Template.html#getCTpl">getCTpl</a></li></ul></li><li><a href="sop.Template.CTpl.html">CTpl</a><ul class='methods'><li data-type='method'><a href="sop.Template.CTpl.html#render">render</a></li></ul></li><li><a href="sop.Url.html">Url</a><ul class='methods'><li data-type='method'><a href="sop.Url.html#.parse">parse</a></li><li data-type='method'><a href="sop.Url.html#.parseHash">parseHash</a></li><li data-type='method'><a href="sop.Url.html#.parseSearch">parseSearch</a></li><li data-type='method'><a href="sop.Url.html#toString">toString</a></li></ul></li></ul><h3>Namespaces</h3><ul><li><a href="sop.html">sop</a><ul class='methods'><li data-type='method'><a href="sop.html#.aRemove">aRemove</a></li><li data-type='method'><a href="sop.html#.assertEmpty">assertEmpty</a></li><li data-type='method'><a href="sop.html#.extend">extend</a></li><li data-type='method'><a href="sop.html#.extendProto">extendProto</a></li><li data-type='method'><a href="sop.html#.fDelay">fDelay</a></li><li data-type='method'><a href="sop.html#.generateId">generateId</a></li><li data-type='method'><a href="sop.html#.getValueByPath">getValueByPath</a></li><li data-type='method'><a href="sop.html#.isArray">isArray</a></li><li data-type='method'><a href="sop.html#.isBoolean">isBoolean</a></li><li data-type='method'><a href="sop.html#.isElement">isElement</a></li><li data-type='method'><a href="sop.html#.isFunction">isFunction</a></li><li data-type='method'><a href="sop.html#.isNumber">isNumber</a></li><li data-type='method'><a href="sop.html#.isNumeric">isNumeric</a></li><li data-type='method'><a href="sop.html#.isObject">isObject</a></li><li data-type='method'><a href="sop.html#.isObjectLike">isObjectLike</a></li><li data-type='method'><a href="sop.html#.isString">isString</a></li><li data-type='method'><a href="sop.html#.isUndefined">isUndefined</a></li><li data-type='method'><a href="sop.html#.oEvery">oEvery</a></li><li data-type='method'><a href="sop.html#.oForEach">oForEach</a></li><li data-type='method'><a href="sop.html#.oIndexOf">oIndexOf</a></li><li data-type='method'><a href="sop.html#.oKeys">oKeys</a></li><li data-type='method'><a href="sop.html#.oToQueryString">oToQueryString</a></li><li data-type='method'><a href="sop.html#.setValueByPath">setValueByPath</a></li><li data-type='method'><a href="sop.html#.sFormat">sFormat</a></li><li data-type='method'><a href="sop.html#.sToObject">sToObject</a></li><li data-type='method'><a href="sop.html#.type">type</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#define">define</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">Stage.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>define({
+    name: 'sop.Stage',
+    requires: ['sop.Template', 'sop.Ajax', 'sop.Message'],
+    init: function (Tpl, Ajax, Msg) {
+        /**
+         * @memberof sop
+         * @constructor
+         */
+        var Stage = function () {
+            sop.Observable.call(this);
+
+            this.debug = false;
+
+            this.route = '';
+            this.layout = '';
+            this.layoutFromUrl = '';
+
+            this._layout = null;
+
+            this.isReady = false;
+
+            this.registerEvents([
+                'ready',
+                'beforeRender',
+                'afterRender',
+                'beforeShow',
+                'afterShow',
+                'beforeHide',
+                'afterHide'
+            ]);
+
+            this._autoAbortTasks = [];
+        };
+
+        sop.extendProto(Stage, sop.Observable);
+
+        Stage.prototype._init = function () {
+            this._layout = new Tpl(this.layout, this.debug).getCTpl();
+            this.on('afterHide', this._destroy.bind(this));
+        };
+
+        Stage.prototype._resolveUrl = function () {
+            if (!/^https?/.test(this.layoutFromUrl)) {
+                if (this.layoutFromUrl[0] !== '/') {
+                    this.layoutFromUrl = '/' + this.layoutFromUrl;
+                }
+
+                this.layoutFromUrl = sop.getHomeUrl() + this.layoutFromUrl;
+            }
+        };
+
+        /**
+         * Initializes stage, it will be called automatically once stage has been registered by `sop.App.registerStage`
+         */
+        Stage.prototype.init = function () {
+            if (this.isReady)
+                return;
+
+            this._resolveUrl();
+            if (this.layoutFromUrl) {
+                var me = this, ajax = Ajax.create({
+                    url: me.layoutFromUrl,
+                    dataType: 'string',
+                    success: function (html) {
+                        me.layout = html;
+                        me._init();
+                        me.ready = true;
+
+                        me.fire('ready');
+                    },
+                    error: function () {
+                        throw new Error('failed to load remote stage: ' + me.layoutFromUrl);
+                    }
+                });
+
+                ajax.send();
+            } else {
+                this._init();
+                this.ready = true;
+                this.fire('ready');
+            }
+        };
+
+        /**
+         * Get rendered html of stage, it will be called automatically when stages are interacting
+         *
+         * @param context {Object} Context within render
+         * @returns {String} Rendered html
+         */
+        Stage.prototype.render = function (context) {
+            var html;
+            this.fire('beforeRender');
+            html = this._layout.render(context);
+            this.fire('afterRender');
+
+            return html;
+        };
+
+        /**
+         * Get message of this stage
+         *
+         * @returns {sop.Message}
+         */
+        Stage.prototype.getMessage = function () {
+            return Msg.fromHash();
+        };
+
+        /**
+         * Add auto-abort task, auto-abort task will be abort automatically if it's still running after
+         * it's associative stage has been hidden
+         *
+         * @param task
+         */
+        Stage.prototype.addAutoAbortTask = function (task) {
+            this._autoAbortTasks.push(task);
+        };
+
+        Stage.prototype._destroy = function () {
+            this._autoAbortTasks.forEach(function (t) {
+                if (!t.isStopped()) {
+                    t.abort();
+                }
+            });
+
+            this._autoAbortTasks = [];
+        };
+
+        return Stage;
+    }
+});</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0-dev</a> on Tue Apr 14 2015 02:30:49 GMT+0800 (CST) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

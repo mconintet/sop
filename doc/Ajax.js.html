@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Ajax.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="sop.Ajax.html">Ajax</a><ul class='methods'><li data-type='method'><a href="sop.Ajax.html#.abort">abort</a></li><li data-type='method'><a href="sop.Ajax.html#.create">create</a></li><li data-type='method'><a href="sop.Ajax.html#abort">abort</a></li><li data-type='method'><a href="sop.Ajax.html#isStopped">isStopped</a></li><li data-type='method'><a href="sop.Ajax.html#send">send</a></li></ul></li><li><a href="sop.Application.html">Application</a><ul class='methods'><li data-type='method'><a href="sop.Application.html#dispatch">dispatch</a></li><li data-type='method'><a href="sop.Application.html#getCurrentRoute">getCurrentRoute</a></li><li data-type='method'><a href="sop.Application.html#registerStage">registerStage</a></li><li data-type='method'><a href="sop.Application.html#run">run</a></li></ul></li><li><a href="sop.Message.html">Message</a><ul class='methods'><li data-type='method'><a href="sop.Message.html#.fromHash">fromHash</a></li><li data-type='method'><a href="sop.Message.html#send">send</a></li></ul></li><li><a href="sop.Observable.html">Observable</a><ul class='methods'><li data-type='method'><a href="sop.Observable.html#fire">fire</a></li><li data-type='method'><a href="sop.Observable.html#getListeners">getListeners</a></li><li data-type='method'><a href="sop.Observable.html#hasEvent">hasEvent</a></li><li data-type='method'><a href="sop.Observable.html#off">off</a></li><li data-type='method'><a href="sop.Observable.html#on">on</a></li><li data-type='method'><a href="sop.Observable.html#registerEvents">registerEvents</a></li></ul></li><li><a href="sop.Stage.html">Stage</a><ul class='methods'><li data-type='method'><a href="sop.Stage.html#addAutoAbortTask">addAutoAbortTask</a></li><li data-type='method'><a href="sop.Stage.html#getMessage">getMessage</a></li><li data-type='method'><a href="sop.Stage.html#init">init</a></li><li data-type='method'><a href="sop.Stage.html#render">render</a></li></ul></li><li><a href="sop.Template.html">Template</a><ul class='methods'><li data-type='method'><a href="sop.Template.html#getCTpl">getCTpl</a></li></ul></li><li><a href="sop.Template.CTpl.html">CTpl</a><ul class='methods'><li data-type='method'><a href="sop.Template.CTpl.html#render">render</a></li></ul></li><li><a href="sop.Url.html">Url</a><ul class='methods'><li data-type='method'><a href="sop.Url.html#.parse">parse</a></li><li data-type='method'><a href="sop.Url.html#.parseHash">parseHash</a></li><li data-type='method'><a href="sop.Url.html#.parseSearch">parseSearch</a></li><li data-type='method'><a href="sop.Url.html#toString">toString</a></li></ul></li></ul><h3>Namespaces</h3><ul><li><a href="sop.html">sop</a><ul class='methods'><li data-type='method'><a href="sop.html#.aRemove">aRemove</a></li><li data-type='method'><a href="sop.html#.assertEmpty">assertEmpty</a></li><li data-type='method'><a href="sop.html#.extend">extend</a></li><li data-type='method'><a href="sop.html#.extendProto">extendProto</a></li><li data-type='method'><a href="sop.html#.fDelay">fDelay</a></li><li data-type='method'><a href="sop.html#.generateId">generateId</a></li><li data-type='method'><a href="sop.html#.getValueByPath">getValueByPath</a></li><li data-type='method'><a href="sop.html#.isArray">isArray</a></li><li data-type='method'><a href="sop.html#.isBoolean">isBoolean</a></li><li data-type='method'><a href="sop.html#.isElement">isElement</a></li><li data-type='method'><a href="sop.html#.isFunction">isFunction</a></li><li data-type='method'><a href="sop.html#.isNumber">isNumber</a></li><li data-type='method'><a href="sop.html#.isNumeric">isNumeric</a></li><li data-type='method'><a href="sop.html#.isObject">isObject</a></li><li data-type='method'><a href="sop.html#.isObjectLike">isObjectLike</a></li><li data-type='method'><a href="sop.html#.isString">isString</a></li><li data-type='method'><a href="sop.html#.isUndefined">isUndefined</a></li><li data-type='method'><a href="sop.html#.oEvery">oEvery</a></li><li data-type='method'><a href="sop.html#.oForEach">oForEach</a></li><li data-type='method'><a href="sop.html#.oIndexOf">oIndexOf</a></li><li data-type='method'><a href="sop.html#.oKeys">oKeys</a></li><li data-type='method'><a href="sop.html#.oToQueryString">oToQueryString</a></li><li data-type='method'><a href="sop.html#.setValueByPath">setValueByPath</a></li><li data-type='method'><a href="sop.html#.sFormat">sFormat</a></li><li data-type='method'><a href="sop.html#.sToObject">sToObject</a></li><li data-type='method'><a href="sop.html#.type">type</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#define">define</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">Ajax.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>define({
+    name: 'sop.Ajax',
+    init: function () {
+        var defaultCfg = {
+            url: '',
+            type: 'GET',
+            async: true,
+            data: {},
+            dataType: 'json',
+            before: null,
+            success: null,
+            complete: null,
+            error: null,
+            abort: null,
+            timeout: 0
+        };
+
+        /**
+         * @class
+         * @memberof sop
+         * @param cfg
+         * @param {String} cfg.url Url to load resource from
+         * @param {String} [cfg.type=GET] Request type
+         * @param {Boolean} [cfg.async=true] Uses async or not, default is async
+         * @param {Object|String} [cfg.data={}] Request params, default is an new empty object
+         * @param {String} [cfg.dataType=json] Type of response text. Response text will be converted into object if this value
+         * is 'json' and default value is 'json'. Another optional value is 'string'.
+         * @param {Function} [cfg.before=null] Callback will be executed before sending
+         * @param {Function} [cfg.success=null] Callback will be executed once succeed
+         * @param {Function} [cfg.complete=null] Callback will be executed once completed
+         * @param {Function} [cfg.error=null] Callback will be executed once error occurred
+         * @param {Function} [cfg.abort=null] Callback will be executed once aborted
+         * @param {Number} [cfg.timeout=0] Timeout of requesting, default is '0' it means no timeout
+         */
+        var Ajax = function (cfg) {
+            sop.Observable.call(this);
+
+            this.registerEvents([
+                'before',
+                'success',
+                'complete',
+                'error',
+                'abort'
+            ]);
+
+            sop.extend(this, defaultCfg, cfg);
+
+            this.xhr = new XMLHttpRequest();
+
+            if (sop.isFunction(cfg['before']))
+                this.on('before', cfg.before);
+
+            if (sop.isFunction(cfg['success']))
+                this.on('success', cfg.success);
+
+            if (sop.isFunction(cfg['complete']))
+                this.on('complete', cfg.complete);
+
+            if (sop.isFunction(cfg['error']))
+                this.on('error', cfg.error);
+
+            if (sop.isFunction(cfg['abort']))
+                this.on('abort', cfg.abort);
+
+            this.id = sop.generateId();
+
+            this._isStopped = false;
+        };
+
+        sop.extendProto(Ajax, sop.Observable);
+
+        Ajax.prototype._initXhr = function () {
+            if (!this.url)
+                console.error('opts.url can not empty!');
+
+            if (!sop.isString(this.data) &amp;&amp; !sop.isObject(this.data))
+                console.error('opts.data muse be String or Pure Object!');
+
+            this.data = sop.oToQueryString(this.data);
+
+            if (!sop.isNumeric(this.timeout) || (this.timeout = parseInt(this.timeout)) &lt; 0)
+                console.error('opts.timeout must be positive number!');
+
+            var xhr = new XMLHttpRequest();
+
+            if (this.type === 'GET' &amp;&amp; this.data) {
+                this.url = this.url + '?' + this.data;
+            }
+
+            xhr.open(this.type, this.url, !!this.async);
+
+            xhr.onload = (function (me) {
+                return function () {
+                    clearTimeout(me.timeoutHandler);
+
+                    if (this.status === 200) {
+                        var response = null;
+
+                        if (me.dataType === 'string') {
+                            response = this.responseText;
+                        } else if (me.dataType === 'json') {
+                            response = sop.sToObject(this.responseText);
+                        }
+
+                        if (sop.isUndefined(response) &amp;&amp; me.dataType === 'json') {
+                            me.fire('error', new Error('parse json error, response text is ' + this.responseText));
+                        } else {
+                            me.fire('success', response);
+                        }
+                    } else {
+                        //network error
+                        me.fire('error', new Error('Network error, code is ' + this.status));
+                    }
+
+                    me.fire('complete');
+                    Ajax.aliveAjaxStore.remove(me);
+
+                    this._isStopped = true;
+                };
+            })(this);
+
+            this.xhr = xhr;
+        };
+
+        Ajax.prototype._onAbort = function () {
+            this.xhr.abort();
+
+            this.fire('abort');
+            this.fire('complete');
+
+            Ajax.aliveAjaxStore.remove(this);
+
+            this._isStopped = true;
+        };
+
+        /**
+         * Start to send request to remote server
+         */
+        Ajax.prototype.send = function () {
+            this._initXhr();
+            this.fire('before');
+
+            Ajax.aliveAjaxStore.add(this);
+            this.xhr.send(this.data);
+
+            if (this.timeout) {
+                this.timeoutHandler = this._onAbort.delay(this.timeout, this);
+            }
+        };
+
+        /**
+         * Ajax is stopped or not
+         * @returns {boolean}
+         */
+        Ajax.prototype.isStopped = function () {
+            return this._isStopped;
+        };
+
+        /**
+         * Abort this ajax request
+         */
+        Ajax.prototype.abort = function () {
+            this.xhr.abort();
+            this._onAbort();
+        };
+
+        /**
+         * @type {sop.Ajax.aliveAjaxStore}
+         */
+        Ajax.aliveAjaxStore = (function () {
+            var store = {};
+
+            return /** @alias module:sop.Ajax.aliveAjaxStore */{
+                /**
+                 * Add alive ajax, this method will be called automatically before sending, so if you want to add your own
+                 * ajax you should follow steps like below:
+                 *
+                 *     var ajax = new Ajax(cfg);
+                 *     // adding must before sending
+                 *     sop.Ajax.aliveAjaxStore.add(ajax);
+                 *     ajax.send();
+                 *
+                 * @param ajax {sop.Ajax} Ajax to be added
+                 * @returns {sop.Ajax.aliveAjaxStore}
+                 */
+                add: function (ajax) {
+                    if (store[ajax.id]) {
+                        throw new Error('ajax with id: ' + ajax.id + ' already exists');
+                    }
+
+                    store[ajax.id] = ajax;
+                    return this;
+                },
+                /**
+                 * Remote ajax
+                 * @param ajax {sop.Ajax} Ajax to be removed
+                 * @returns {sop.Ajax.aliveAjaxStore}
+                 */
+                remove: function (ajax) {
+                    delete store[ajax.id];
+                    return this;
+                },
+                /**
+                 * Clear internal store
+                 *
+                 * @returns {sop.Ajax.aliveAjaxStore}
+                 */
+                clear: function () {
+                    store = {};
+                    return this;
+                },
+                /**
+                 * Return internal store
+                 *
+                 * @returns {{}} Internal store
+                 */
+                all: function () {
+                    return store;
+                },
+                /**
+                 * Count of all alive requests
+                 *
+                 * @returns {Number} Count
+                 */
+                count: function () {
+                    return sop.oKeys(store).length;
+                }
+            };
+        })();
+
+        /**
+         * Abort all alive ajax requests
+         */
+        Ajax.abort = function () {
+            var allAliveAjax = this.aliveAjaxStore.all();
+            allAliveAjax.each(function (ajax) {
+                ajax.abort();
+            });
+        };
+
+        /**
+         * Create new ajax
+         *
+         * @param cfg
+         * @param {String} cfg.url Url to load resource from
+         * @param {String} [cfg.type=GET] Request type
+         * @param {Boolean} [cfg.async=true] Uses async or not, default is async
+         * @param {Object|String} [cfg.data={}] Request params, default is an new empty object
+         * @param {String} [cfg.dataType=json] Type of response text. Response text will be converted into object if this value
+         * is 'json' and default value is 'json'. Another optional value is 'string'.
+         * @param {Function} [cfg.before=null] Callback will be executed before sending
+         * @param {Function} [cfg.success=null] Callback will be executed once succeed
+         * @param {Function} [cfg.complete=null] Callback will be executed once completed
+         * @param {Function} [cfg.error=null] Callback will be executed once error occurred
+         * @param {Function} [cfg.abort=null] Callback will be executed once aborted
+         * @param {Number} [cfg.timeout=0] Timeout of requesting, default is '0' it means no timeout
+         * @param cfg
+         * @returns {Ajax}
+         */
+        Ajax.create = function (cfg) {
+            return new Ajax(cfg);
+        };
+
+        return Ajax;
+    }
+});</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0-dev</a> on Tue Apr 14 2015 02:30:49 GMT+0800 (CST) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

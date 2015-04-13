@@ -1,19 +1,30 @@
-/**
- * @module sop.url
- */
-
 define({
-    name: 'sop.url',
+    name: 'sop.Url',
     init: function () {
+        /**
+         * @class
+         * @memberof sop
+         */
         var Url = function () {
+            /** @prop {String} protocol Example: 'http:' */
             this.protocol = '';
+            /** @prop {String} host Example: 'example.com' */
             this.host = '';
+            /** @prop {String} port Example: '8080' */
             this.port = '';
+            /** @prop {String} path Example: '/index.html' */
             this.path = '';
+            /** @prop {String} search Example: '?k=v' */
             this.search = '';
+            /** @prop {String} hash Example: '#anchor' */
             this.hash = '';
         };
 
+        /**
+         * Converts url to string
+         *
+         * @returns {String}
+         */
         Url.prototype.toString = function () {
             return this.protocol + '//' + this.host +
                 (this.port ? ':' + this.port : '') +
@@ -22,7 +33,13 @@ define({
                 (this.hash ? '#' + this.hash : '');
         };
 
-        var parse = function (str) {
+        /**
+         * Parses url string
+         *
+         * @param {String} str Url string to be parsed
+         * @returns {sop.Url}
+         */
+        Url.parse = function (str) {
             var regOnLine = /^((ftp|http|https):)\/\/([a-zA-Z0-9.-]+)(:(\d+))?(\/[^?#]+)?(\?([^#]*))?(#(.*))?$/,
                 regOffLine = /^file:\/\/([^?#]+)?(\?([^#]*))?(#(.*))?/,
                 url = new Url();
@@ -53,16 +70,18 @@ define({
         };
 
         /**
-         * for this '#c/a/?get=test'
+         * For this `#c/a/?get=test`
          * return below:
-         * {
-         *      path: 'c/a/',
-         *      search: '?get=test'
-         * }
-         * @param str
-         * @returns {{}}
+         *
+         *     {
+         *          path: 'c/a/',
+         *          search: '?get=test'
+         *     }
+         *
+         * @param str {String} Hash string to be operated
+         * @returns {{path: string, search: string}}
          */
-        var parseHash = function (str) {
+        Url.parseHash = function (str) {
             var regHash = /^#([^?]+)(\?.*)?$/,
                 ret = {
                     path: '',
@@ -77,7 +96,21 @@ define({
             return ret;
         };
 
-        var parseSearch = function (str) {
+        /**
+         * For example:
+         *
+         *     var p = sop.url.parseSearch('?k1=v1&k2=v2');
+         *     console.log(p);
+         *     // p will be:
+         *     // {
+         *     //     k1 : 'v1',
+         *     //     k2 : 'v2'
+         *     //  }
+         *
+         * @param str {String} Search string to be operated
+         * @returns {{}}
+         */
+        Url.parseSearch = function (str) {
             if (str[0] === '?') {
                 str = str.slice(1);
             }
@@ -93,12 +126,6 @@ define({
             return ret;
         };
 
-        return /** @alias module:sop.url */ {
-            /** @class */
-            Url: Url,
-            parse: parse,
-            parseHash: parseHash,
-            parseSearch: parseSearch
-        };
+        return Url;
     }
 });

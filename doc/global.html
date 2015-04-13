@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Global - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="sop.Ajax.html">Ajax</a><ul class='methods'><li data-type='method'><a href="sop.Ajax.html#.abort">abort</a></li><li data-type='method'><a href="sop.Ajax.html#.create">create</a></li><li data-type='method'><a href="sop.Ajax.html#abort">abort</a></li><li data-type='method'><a href="sop.Ajax.html#isStopped">isStopped</a></li><li data-type='method'><a href="sop.Ajax.html#send">send</a></li></ul></li><li><a href="sop.Application.html">Application</a><ul class='methods'><li data-type='method'><a href="sop.Application.html#dispatch">dispatch</a></li><li data-type='method'><a href="sop.Application.html#getCurrentRoute">getCurrentRoute</a></li><li data-type='method'><a href="sop.Application.html#registerStage">registerStage</a></li><li data-type='method'><a href="sop.Application.html#run">run</a></li></ul></li><li><a href="sop.Message.html">Message</a><ul class='methods'><li data-type='method'><a href="sop.Message.html#.fromHash">fromHash</a></li><li data-type='method'><a href="sop.Message.html#send">send</a></li></ul></li><li><a href="sop.Observable.html">Observable</a><ul class='methods'><li data-type='method'><a href="sop.Observable.html#fire">fire</a></li><li data-type='method'><a href="sop.Observable.html#getListeners">getListeners</a></li><li data-type='method'><a href="sop.Observable.html#hasEvent">hasEvent</a></li><li data-type='method'><a href="sop.Observable.html#off">off</a></li><li data-type='method'><a href="sop.Observable.html#on">on</a></li><li data-type='method'><a href="sop.Observable.html#registerEvents">registerEvents</a></li></ul></li><li><a href="sop.Stage.html">Stage</a><ul class='methods'><li data-type='method'><a href="sop.Stage.html#addAutoAbortTask">addAutoAbortTask</a></li><li data-type='method'><a href="sop.Stage.html#getMessage">getMessage</a></li><li data-type='method'><a href="sop.Stage.html#init">init</a></li><li data-type='method'><a href="sop.Stage.html#render">render</a></li></ul></li><li><a href="sop.Template.html">Template</a><ul class='methods'><li data-type='method'><a href="sop.Template.html#getCTpl">getCTpl</a></li></ul></li><li><a href="sop.Template.CTpl.html">CTpl</a><ul class='methods'><li data-type='method'><a href="sop.Template.CTpl.html#render">render</a></li></ul></li><li><a href="sop.Url.html">Url</a><ul class='methods'><li data-type='method'><a href="sop.Url.html#.parse">parse</a></li><li data-type='method'><a href="sop.Url.html#.parseHash">parseHash</a></li><li data-type='method'><a href="sop.Url.html#.parseSearch">parseSearch</a></li><li data-type='method'><a href="sop.Url.html#toString">toString</a></li></ul></li></ul><h3>Namespaces</h3><ul><li><a href="sop.html">sop</a><ul class='methods'><li data-type='method'><a href="sop.html#.aRemove">aRemove</a></li><li data-type='method'><a href="sop.html#.assertEmpty">assertEmpty</a></li><li data-type='method'><a href="sop.html#.extend">extend</a></li><li data-type='method'><a href="sop.html#.extendProto">extendProto</a></li><li data-type='method'><a href="sop.html#.fDelay">fDelay</a></li><li data-type='method'><a href="sop.html#.generateId">generateId</a></li><li data-type='method'><a href="sop.html#.getValueByPath">getValueByPath</a></li><li data-type='method'><a href="sop.html#.isArray">isArray</a></li><li data-type='method'><a href="sop.html#.isBoolean">isBoolean</a></li><li data-type='method'><a href="sop.html#.isElement">isElement</a></li><li data-type='method'><a href="sop.html#.isFunction">isFunction</a></li><li data-type='method'><a href="sop.html#.isNumber">isNumber</a></li><li data-type='method'><a href="sop.html#.isNumeric">isNumeric</a></li><li data-type='method'><a href="sop.html#.isObject">isObject</a></li><li data-type='method'><a href="sop.html#.isObjectLike">isObjectLike</a></li><li data-type='method'><a href="sop.html#.isString">isString</a></li><li data-type='method'><a href="sop.html#.isUndefined">isUndefined</a></li><li data-type='method'><a href="sop.html#.oEvery">oEvery</a></li><li data-type='method'><a href="sop.html#.oForEach">oForEach</a></li><li data-type='method'><a href="sop.html#.oIndexOf">oIndexOf</a></li><li data-type='method'><a href="sop.html#.oKeys">oKeys</a></li><li data-type='method'><a href="sop.html#.oToQueryString">oToQueryString</a></li><li data-type='method'><a href="sop.html#.setValueByPath">setValueByPath</a></li><li data-type='method'><a href="sop.html#.sFormat">sFormat</a></li><li data-type='method'><a href="sop.html#.sToObject">sToObject</a></li><li data-type='method'><a href="sop.html#.type">type</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#define">define</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">Global</h1>
+    
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="define"><span class="type-signature"></span>define<span class="signature">(cfg)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Define a new module or class.</p>
+<p>Here are some conventions:</p>
+<ul>
+<li><p>If defining a new module, the first letter of module name must be lowercase,
+if defining a new class, the first letter of class name must be uppercase.</p>
+</li>
+<li><p>One file can contain only one module or class.</p>
+</li>
+<li><p>The file name must be the same as the module or class defined in it.</p>
+</li>
+<li><p>If defining a nested module or class, must create the nested directories with the same name.</p>
+</li>
+</ul>
+<p>Usage:</p>
+<p>By default <code>sop</code> will load modules or classes files respectively and asynchronously
+it requires us to set a base url for the root namespace we're using:</p>
+<pre class="prettyprint source"><code>// create new file named 'world.js' under directory 'hello' and put below code into it
+define({
+     name : 'hello.world',
+     init : function () {
+         console.log('hello init');
+
+         return {
+             print : function () {
+                 console.log('hello world');
+             }
+         };
+     }
+})
+
+// put below into 'hello/index.html'
+define.setBaseUrl('hello', 'http://127.0.0.1/hello')
+
+define({
+     name : 'myApp',
+     requires : ['hello.world'],
+     init : function () {
+         hello.world.print();
+     }
+});
+
+// turn on console of browser then open 'hello/index.html'
+// you'll see:
+// hello init
+// hello world</code></pre>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>cfg</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>The name of new module or class</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>requires</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    []
+                
+                </td>
+            
+
+            <td class="description last"><p>The dependencies of current new module or class</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>init</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>The function to init module or class, it will be run once all the dependencies has been resolved</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="core.js.html">core.js</a>, <a href="core.js.html#line1030">line 1030</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0-dev</a> on Tue Apr 14 2015 02:30:49 GMT+0800 (CST) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
