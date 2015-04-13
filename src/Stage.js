@@ -24,6 +24,8 @@ define({
                 'beforeHide',
                 'afterHide'
             ]);
+
+            this._autoAbortTasks = [];
         };
 
         sop.extendProto(Stage, sop.Observable);
@@ -85,8 +87,18 @@ define({
             return Msg.fromHash();
         };
 
+        Stage.prototype.addAutoAbortTask = function (task) {
+            this._autoAbortTasks.push(task);
+        };
+
         Stage.prototype._destroy = function () {
-            // placeholder
+            this._autoAbortTasks.forEach(function (t) {
+                if (!t.isStopped()) {
+                    t.abort();
+                }
+            });
+
+            this._autoAbortTasks = [];
         };
 
         return Stage;

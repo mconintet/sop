@@ -46,6 +46,8 @@ define({
                 this.on('abort', cfg.abort);
 
             this.id = sop.generateId();
+
+            this._isStopped = false;
         };
 
         sop.extendProto(Ajax, sop.Observable);
@@ -95,6 +97,8 @@ define({
 
                     me.fire('complete');
                     Ajax.aliveAjaxStore.remove(me);
+
+                    this._isStopped = true;
                 };
             })(this);
 
@@ -108,6 +112,8 @@ define({
             this.fire('complete');
 
             Ajax.aliveAjaxStore.remove(this);
+
+            this._isStopped = true;
         };
 
         Ajax.prototype.send = function () {
@@ -120,6 +126,10 @@ define({
             if (this.timeout) {
                 this.timeoutHandler = this._onAbort.delay(this.timeout, this);
             }
+        };
+
+        Ajax.prototype.isStopped = function () {
+            return this._isStopped;
         };
 
         Ajax.prototype.abort = function () {
