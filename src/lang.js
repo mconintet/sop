@@ -257,6 +257,17 @@
         return JSON.parse(this);
     };
 
+    // capability see: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
+    // since support of IE in mobile device is unknown, so this extends if needed
+    if (!Function.prototype.bind) {
+        Function.prototype.bind = function (thisObj) {
+            var me = this;
+            return function () {
+                me.apply(thisObj, arguments);
+            };
+        };
+    }
+
     S.extend = function () {
         var args = arguments, i = 1, len = args.length, target = args[0], arg, p;
         for (; i < len; i++) {
