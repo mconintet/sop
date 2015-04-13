@@ -51,7 +51,7 @@ define({
 
             if (this.previousStage) {
                 this.previousStage.fire('beforeHide');
-                this.previousStage.file('afterHide');
+                this.previousStage.fire('afterHide');
             }
 
             this.currentStage.fire('beforeShow');

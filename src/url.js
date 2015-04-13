@@ -10,6 +10,14 @@ define({
             this.hash = '';
         };
 
+        Url.prototype.toString = function () {
+            return this.protocol + '//' + this.host +
+                (this.port ? ':' + this.port : '') +
+                (this.path ? '/' + this.path : '') +
+                (this.search ? '?' + this.search : '') +
+                (this.hash ? '#' + this.hash : '');
+        };
+
         var parse = function (str) {
             var regOnLine = /^((ftp|http|https):)\/\/([a-zA-Z0-9.-]+)(:(\d+))?(\/[^?#]+)?(\?([^#]*))?(#(.*))?$/,
                 regOffLine = /^file:\/\/([^?#]+)?(\?([^#]*))?(#(.*))?/,

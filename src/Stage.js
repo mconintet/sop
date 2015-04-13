@@ -1,7 +1,7 @@
 define({
     name: 'sop.Stage',
-    requires: ['sop.Template', 'sop.Ajax'],
-    init: function (Tpl, Ajax) {
+    requires: ['sop.Template', 'sop.Ajax', 'sop.Message'],
+    init: function (Tpl, Ajax, Msg) {
         var Stage = function () {
             sop.Observable.call(this);
 
@@ -24,8 +24,6 @@ define({
                 'beforeHide',
                 'afterHide'
             ]);
-
-            this._hashParams = null;
         };
 
         sop.extendProto(Stage, sop.Observable);
@@ -83,16 +81,12 @@ define({
             return html;
         };
 
-        Stage.prototype.getHashParams = function () {
-            if (this._hashParams === null) {
-                this._hashParams = sop.App.getCurrentHashParams();
-            }
-
-            return this._hashParams;
+        Stage.prototype.getMessage = function () {
+            return Msg.fromHash();
         };
 
         Stage.prototype._destroy = function () {
-            this._hashParams = null;
+            // placeholder
         };
 
         return Stage;

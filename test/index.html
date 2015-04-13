@@ -15,13 +15,18 @@
 
     define({
         name: 'myApp',
-        requires: ['sop.Application', 'sop.Stage', 'sop/vendor/jquery-2.1.3.min.js'],
-        init: function (App, Stage) {
+        requires: ['sop.Application', 'sop.Stage', 'sop/vendor/jquery-2.1.3.min.js', 'sop.Message'],
+        init: function (App, Stage, _, Msg) {
             var stage = new Stage();
             stage.route = 'hello';
             //stage.layout = 'hello world';
             stage.layoutFromUrl = 'sop/test/views/hello.html';
             App.registerStage(stage);
+
+            stage.on('afterShow', function () {
+                var m = this.getMessage();
+                $('#name').html(m.name);
+            });
 
             stage = new Stage();
             stage.route = 'about';
@@ -33,6 +38,17 @@
             stage.route = '';
             stage.layoutFromUrl = 'sop/test/views/default.html';
             App.registerStage(stage);
+
+            stage.on('afterShow', function () {
+                $('#btn2hello').on('click', function () {
+                    var name = prompt('wha\'t your name?');
+                    var m = new Msg();
+                    m.route = 'hello';
+                    m.name = name;
+
+                    m.send();
+                });
+            });
         }
     });
 </script>
