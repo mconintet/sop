@@ -4,13 +4,14 @@ define({
     init: function (Url) {
         /**
          * @memberof sop
-         * @constructor
+         * @class
          */
         var Application = function () {
             sop.Observable.call(this);
             this.stages = {};
 
             this.registerEvents([
+                'stagesReady',
                 'ready'
             ]);
 
@@ -21,23 +22,6 @@ define({
         };
 
         sop.extendProto(Application, sop.Observable);
-
-        /**
-         * Runs application itself, it observes 'hashchange' event.
-         *
-         * @returns {sop.Application}
-         */
-        Application.prototype.run = function () {
-            var me = this;
-
-            me.dispatch(me.getCurrentRoute());
-
-            window.addEventListener('hashchange', (function () {
-                this.dispatch(this.getCurrentRoute());
-            }).bind(this));
-
-            return this;
-        };
 
         /**
          * Gets current route, the route is a part of hash string in current url
@@ -87,17 +71,52 @@ define({
                 me.notReadyStage--;
 
                 if (me.notReadyStage === 0) {
-                    me.fire('ready')
+                    me.fire('stagesReady')
                 }
             });
-
-            stage.init();
         };
 
+        Application.prototype._initStages = function () {
+            sop.oForEach(this.stages, function (stage) {
+                stage.init();
+            });
+        };
+
+        Application.prototype._run = function () {
+            var me = this;
+
+            me.dispatch(me.getCurrentRoute());
+
+            window.addEventListener('hashchange', (function () {
+                this.dispatch(this.getCurrentRoute());
+            }).bind(this));
+
+            this.fire('ready');
+
+            return this;
+        };
+
+
+        /**
+         * Runs application itself, it will observe 'hashchange' event once all resources are ready
+         *
+         * @returns {sop.Application}
+         */
+        Application.prototype.run = function () {
+            this.on('stagesReady', (function () {
+                this._run();
+            }).bind(this));
+
+            this._initStages();
+
+            return this;
+        };
+
+        /**
+         * @memberof sop
+         * @type {sop.Application}
+         */
         sop.App = new Application();
-        sop.App.on('ready', function () {
-            sop.App.run();
-        });
 
         return sop.App;
     }
