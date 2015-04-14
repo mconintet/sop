@@ -1,0 +1,17 @@
+{{ if( context.username && context.password ): }}
+    <h2>Customer Account Page</h2>
+
+    <p>Today is {{ sop.Date.format('Y-m-d H:i:s') }}, welcome back dear <b>{{ context.username }}</b></p>
+
+    {{ this.childTpl('notifyPwd') }}
+{{ else: }}
+    <p>Please <a href="#login">login</a>.</p>
+{{ endif;}}
+
+<script type="text/jsTpl" data-name="notifyPwd">
+    {{ if( context.password.length > 6 ): }}
+        <p><span style="color:green">Congrats</span>, your password is strong.</p>
+    {{ else: }}
+        <p><span style="color:red">Oops</span>, your password is weak.</p>
+    {{ endif; }}
+</script>
