@@ -10,3 +10,6 @@ Modern browsers:
 * SF 6+
 * Webkit
 * IE >= 9
+
+[Doc](http://180.97.81.101/sop/doc/)
+[Demo](http://180.97.81.101/sop/test/)
