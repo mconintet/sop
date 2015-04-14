@@ -1,6 +1,8 @@
 define({
     name: 'sop.Date',
     init: function () {
+        var D = window.Date;
+
         /**
          * @memberof sop
          * @constructor
@@ -117,9 +119,9 @@ define({
             };
 
             return function (date, opt) {
-                if (S.isUndefined(opt)) {
+                if (sop.isUndefined(opt)) {
                     opt = date;
-                    date = new Date();
+                    date = new D();
                 }
 
                 return opt ? opt.replace(/\b(\w+)\b/g, function (match) {
