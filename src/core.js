@@ -416,7 +416,7 @@
      * @returns {Array.<Object>} Converted array
      */
     S.oToArray = function (obj) {
-        return Array.prototype.slice.call({}, obj);
+        return Array.prototype.slice.call(obj);
     };
 
     /**
