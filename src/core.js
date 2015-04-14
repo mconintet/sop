@@ -267,12 +267,12 @@
      * This function will not modify the original array.
      *
      *     var a = [1, 2 , 3];
-     *     S.aRemove(a, [0, 1]); // a => [3]
+     *     S.aRemove(a, [0, 1]);   // a => [3]
      *
      *     a = [1, 2 , 3];
      *     sop.aRemove(a, 0);      // a => [2, 3]
      *
-     *      a = [1, 2 , 3];
+     *     a = [1, 2 , 3];
      *     sop.aRemove(a, [0]);    // a => [2, 3]
      *
      * @memberof sop
@@ -405,6 +405,18 @@
         }
 
         return ret;
+    };
+
+    /**
+     * Tries to convert the given value into array
+     *
+     * @memberof sop
+     * @function sop.oToArray
+     * @param obj {Object} Value to be converted
+     * @returns {Array.<Object>} Converted array
+     */
+    S.oToArray = function (obj) {
+        return Array.prototype.slice.call({}, obj);
     };
 
     /**
@@ -975,3 +987,36 @@
     window['define'] = define;
 })(sop);
 
+(function (S) {
+    /**
+     * Gets element by css selector
+     *
+     * @memberof sop
+     * @function sop.$one
+     * @param selector {String} Selector string
+     * @param [doc=window.document] {HTMLDocument|HTMLElement} Element to select from
+     * @returns {HTMLElement} Matched element
+     */
+    S.$one = function (selector, doc) {
+        doc = doc || document;
+        return doc.querySelector(selector);
+    };
+
+    /**
+     * Gets elements by css selector
+     *
+     * @memberof sop
+     * @function sop.$all
+     * @param selector {String} Selector string
+     * @param [doc=window.document] {HTMLDocument|HTMLElement} Element to select from
+     * @param {Boolean} [toArr=true] - Whether converts `NodeList` to `HTMLElement[]`. Default is `true` to do converting.
+     * @returns {Array.<Object>|NodeList}
+     */
+    S.$all = function (selector, doc, toArr) {
+        doc = doc || document;
+        toArr = typeof toArr === 'undefined' ? true : !!toArr;
+
+        var ea = doc.querySelectorAll(selector);
+        return toArr ? S.oToArray(ea) : ea;
+    }
+})(sop);
