@@ -1,6 +1,12 @@
 define({
     name: 'sop.Template',
     init: function () {
+        var txt = document.createElement("textarea");
+        var decodeHtml = function (html) {
+            txt.innerHTML = html;
+            return txt.value;
+        };
+
         /**
          * Supports a php style template in javascript
          *
@@ -15,6 +21,8 @@ define({
             this.debug = debug || false;
 
             this.syntaxReg = /\{\{([^{}]+)\}\}/g;
+
+            this.strTpl = decodeHtml(this.strTpl);
         };
 
         Template._syntaxDict = {
@@ -184,8 +192,20 @@ define({
          * @returns {String} Rendered string
          */
         Template.CTpl.prototype.render = function (context, thisObj) {
-            return this.processed(context, thisObj || {});
+            return this.processed.call(thisObj || {}, context);
         };
+
+        /**
+         * Decodes html string
+         *
+         *     var decoded = Template.decodeHtml('&amp;amp;&amp;amp;');
+         *     // decoded => &&
+         *
+         * @function sop.Template.decodeHtml
+         * @param html {String} Html string to be decoded
+         * @returns {String} Decoded string
+         */
+        Template.decodeHtml = decodeHtml;
 
         return Template;
     }
