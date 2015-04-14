@@ -170,7 +170,7 @@ define({
          * Adds alive ajax, this method will be called automatically before sending, so if you want to add your own
          * ajax you should follow steps like below:
          *
-         *     var ajax = new Ajax(cfg);
+         *     var ajax = new sop.Ajax(cfg);
          *     // adding must before sending
          *     sop.Ajax.add(ajax);
          *     ajax.send();
