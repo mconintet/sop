@@ -167,13 +167,24 @@ define({
         /**
          * Renders template with given context
          *
+         *     var tpl = 'hello, {{ context.name }}';
+         *
+         *     // here use `true` to output debug information into console
+         *     var cTpl = new sop.Template(tpl, true).getCTpl();
+         *
+         *     var context = { name : 'world' };
+         *
+         *     console.log(cTpl.render(context));
+         *     // output => hello, world
+         *
          * @memberof sop.Template.CTpl
          * @function sop.Template.CTpl.prototype.render
          * @param context {Object} Context within render
+         * @param {Object} [thisObj={}] The "this" reference within render function, default is an new empty object
          * @returns {String} Rendered string
          */
-        Template.CTpl.prototype.render = function (context) {
-            return this.processed(context);
+        Template.CTpl.prototype.render = function (context, thisObj) {
+            return this.processed(context, thisObj || {});
         };
 
         return Template;
