@@ -106,7 +106,7 @@ define({
                     success: function (html) {
                         me.layout = html;
                         me._init();
-                        me.ready = true;
+                        me.isReady = true;
 
                         me.fire('ready');
                     },
@@ -118,7 +118,7 @@ define({
                 ajax.send();
             } else {
                 this._init();
-                this.ready = true;
+                this.isReady = true;
                 this.fire('ready');
             }
         };

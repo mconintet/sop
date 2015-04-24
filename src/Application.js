@@ -78,14 +78,13 @@ define({
             this.stages[stage.route] = stage;
             this.notReadyStage++;
 
-            var me = this;
             stage.on('ready', function () {
-                me.notReadyStage--;
-
-                if (me.notReadyStage === 0) {
-                    me.fire('stagesReady')
+                this.notReadyStage--;
+                console.log(this.notReadyStage);
+                if (this.notReadyStage === 0) {
+                    this.fire('stagesReady');
                 }
-            });
+            }.bind(this));
         };
 
         Application.prototype._initStages = function () {
