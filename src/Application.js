@@ -68,7 +68,7 @@ define({
         };
 
         /**
-         * Registers stage with melife, melife will init the registered stage automatically
+         * Registers stage with application, application will init the registered stage automatically
          *
          * @param stage
          */
