@@ -15,6 +15,8 @@ define({
                 'ready'
             ]);
 
+            this._baseUrl = '';
+
             this.notReadyStage = 0;
 
             this.previousStage = null;
@@ -57,12 +59,22 @@ define({
             this.currentStage.fire('afterShow');
         };
 
+        Application.prototype.setBaseUrl = function (url) {
+            return this._baseUrl = sop.sTrimR(url, '\\/');
+        };
+
+        Application.prototype.getBaseUrl = function () {
+            return this._baseUrl;
+        };
+
         /**
-         * Registers stage with app, app will init the registered stage automatically
+         * Registers stage with melife, melife will init the registered stage automatically
          *
          * @param stage
          */
         Application.prototype.registerStage = function (stage) {
+            stage.baseUrl = this._baseUrl + '/views';
+
             this.stages[stage.route] = stage;
             this.notReadyStage++;
 

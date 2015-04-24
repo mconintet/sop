@@ -13,6 +13,8 @@ define({
 
             this.route = '';
             this.layout = '';
+
+            this.baseUrl = '';
             this.layoutFromUrl = '';
 
             this._layout = null;
@@ -49,7 +51,7 @@ define({
                     this.layoutFromUrl = '/' + this.layoutFromUrl;
                 }
 
-                this.layoutFromUrl = sop.getHomeUrl() + this.layoutFromUrl;
+                this.layoutFromUrl = this.baseUrl + this.layoutFromUrl;
             }
         };
 

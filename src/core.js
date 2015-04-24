@@ -452,6 +452,18 @@
         return JSON.parse(str);
     };
 
+    S.sTrim = function (str, sep) {
+        return str.replace(new RegExp('^' + sep + '+|' + sep + '+$', 'g'), '');
+    };
+
+    S.sTrimL = function (str, sep) {
+        return str.replace(new RegExp('^' + sep + '+', 'g'), '');
+    };
+
+    S.sTrimR = function (str, sep) {
+        return str.replace(new RegExp(sep + '+$', 'g'), '');
+    };
+
     /**
      * Executes `fn` after `after` milliseconds,
      *
