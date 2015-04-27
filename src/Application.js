@@ -80,7 +80,7 @@ define({
 
             stage.on('ready', function () {
                 this.notReadyStage--;
-                console.log(this.notReadyStage);
+
                 if (this.notReadyStage === 0) {
                     this.fire('stagesReady');
                 }
