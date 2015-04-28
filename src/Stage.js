@@ -64,7 +64,7 @@ define({
          * @returns {String} Rendered string
          */
         Stage.prototype.childTpl = function (name, context) {
-            context = context || this.getMessage();
+            context = context || this;
             var tpl = this._childrenTpl[name];
             if (!tpl) {
                 throw new Error('try to retrieve child tpl with a unknown name: ' + name + ' of stage:' + this.route);

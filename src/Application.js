@@ -107,6 +107,9 @@ define({
             return this;
         };
 
+        Application.prototype.getStage = function (route) {
+            return this.stages[route];
+        };
 
         /**
          * Runs application itself, it will observe 'hashchange' event once all resources are ready
