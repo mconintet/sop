@@ -126,14 +126,14 @@ define({
         /**
          * Gets rendered html of stage, it will be called automatically when stages are interacting
          *
-         * @param [context=sop.Message] {Object} The context to be used in render, default is the instance of `sop.Message`
+         * @param [context=sop.Message] {Object} The context to be used in render, default is $this
          * being used in current stage
          * @returns {String} Rendered html
          */
         Stage.prototype.render = function (context) {
             var html;
             this.fire('beforeRender');
-            html = this._layout.render(context || this.getMessage(), this);
+            html = this._layout.render(context || this, this);
             this.fire('afterRender');
 
             return html;
