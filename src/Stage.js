@@ -84,7 +84,7 @@ define({
                 }
 
                 me._childrenTpl[n] = new Tpl(e.innerHTML, me.debug).getCTpl();
-                me._tmpDiv.removeChild(e);
+                e.parentNode.removeChild(e);
             });
 
             this.layout = this._tmpDiv.innerHTML;
