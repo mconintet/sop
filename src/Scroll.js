@@ -38,7 +38,10 @@ define({
         };
 
         Scroll.prototype._init = function () {
-            if (sop.type(this.target) === '[object global]') {
+            var ot = sop.type(this.target);
+            if (ot === '[object global]' ||
+                ot === '[object Window]'
+            ) {
                 this.winListener = winListener(this);
                 this.target.addEventListener('scroll', this.winListener);
             } else {
