@@ -36,6 +36,15 @@ define({
         };
 
         /**
+         * Gets viewport
+         *
+         * @returns {HTMLElement}
+         */
+        Application.prototype.getViewport = function () {
+            return sop.$one('div.viewport');
+        };
+
+        /**
          * Dispatches route, shows the stage associative with given route
          *
          * @param route {String} Route string
@@ -55,7 +64,26 @@ define({
             }
 
             this.currentStage.fire('beforeShow');
-            document.body.innerHTML = stage.render();
+
+            var viewPort = this.getViewport();
+            viewPort = viewPort ? viewPort : document.body;
+
+            if (viewPort === document.body) {
+                viewPort.innerHTML = stage.render();
+            } else {
+                var tmpDiv = document.createElement('div');
+                tmpDiv.innerHTML = stage.render();
+                var newViewport = sop.$one('.viewport', tmpDiv);
+
+                if (!newViewport) {
+                    throw new Error('fail to get new viewport');
+                }
+
+                viewPort.style.display = 'none';
+                viewPort.parentNode.insertBefore(newViewport, viewPort);
+                viewPort.parentNode.removeChild(viewPort);
+            }
+
             this.currentStage.fire('afterShow');
         };
 
@@ -95,6 +123,14 @@ define({
 
         Application.prototype._run = function () {
             var me = this;
+
+            var viewport = sop.$one('.viewport');
+            if(!viewport){
+                viewport = document.createElement('div');
+                viewport.className = 'viewport';
+                document.body.appendChild(viewport);
+            }
+
 
             me.dispatch(me.getCurrentRoute());
 
