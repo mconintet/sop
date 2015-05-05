@@ -42,7 +42,11 @@ define({
         NextEnableButton.prototype.reset = function () {
             clearInterval(this.timer);
             this.timer = 0;
-            $(this.btn).removeAttr('disabled');
+
+            var btn = $(this.btn), val = btn.val();
+
+            btn.val(val.replace(/\s+\((\d+)\)/, ''));
+            btn.removeAttr('disabled');
         };
 
         NextEnableButton.prototype.isStopped = function () {
