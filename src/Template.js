@@ -20,77 +20,37 @@ define({
             this.cTpl = null;
             this.debug = debug || false;
 
-            this.syntaxReg = /\{\{([^{}]+)\}\}/g;
+            this.syntaxReg = /\{\{([\s\S]*?)(?=\}\})/g;
 
             this.strTpl = decodeHtml(this.strTpl);
         };
 
-        Template._syntaxDict = {
-            'if(.*):': new RegExp('^if(.*):$'),
-            'else if(.*):': new RegExp('^else if(.*):$'),
-            'else:': new RegExp('^else:$'),
-            'endif;': new RegExp('^endif;$'),
-            'for(.*):': new RegExp('^for(.*):$'),
-            'endfor;': new RegExp('^endfor;$')
-        };
-
-        Template.prototype._getSyntax = function (str) {
-            var syntaxDict = Template._syntaxDict;
-            var ret = '';
-
-            for (var p in syntaxDict) {
-                if (syntaxDict.hasOwnProperty(p)) {
-                    if (syntaxDict[p].test(str)) {
-                        ret = p;
-                        break;
-                    }
-                }
+        Template.prototype._translateSyntax = function (str) {
+            if(/if\(.*\):/.test(str)){
+                return str.replace('):', '){');
             }
 
-            return ret;
-        };
+            if(/else if\(.*\):/.test(str)){
+                return str.replace('else', '}else').replace('):', '){');
+            }
 
-        Template.prototype._translateSyntax = function (str) {
-            var that = this;
+            if(/else:/.test(str)){
+                return str.replace('else', '}else').replace(':', '{');
+            }
 
-            return str.replace(this.syntaxReg, function (m, p1) {
-                var syntax = that._getSyntax(p1.replace(/^\s*|\s*$/g, ''));
-                var part1 = '';
-                var isDefOutput = false;
+            if(/endif;/.test(str)){
+                return str.replace('endif;', '}');
+            }
 
-                switch (syntax) {
-                    case 'if(.*):':
-                        part1 = p1.replace('):', '){');
-                        break;
-                    case 'else if(.*):':
-                        part1 = p1.replace('else', '}else').replace('):', '){');
-                        break;
-                    case 'else:':
-                        part1 = p1.replace('else', '}else').replace(':', '{');
-                        break;
-                    case 'endif;':
-                        part1 = '}';
-                        break;
-                    case 'for(.*):':
-                        part1 = p1.replace('):', '){');
-                        break;
-                    case 'endfor;':
-                        part1 = '}';
-                        break;
-                    default :
-                        part1 = p1;
-                        if (part1.indexOf('=') == -1) {
-                            isDefOutput = true;
-                        }
-                        break;
-                }
+            if(/for\(.*\):/.test(str)){
+                return str.replace('):', '){');
+            }
 
-                if (isDefOutput) {
-                    return 'output += ' + part1 + ';';
-                } else {
-                    return part1;
-                }
-            });
+            if(/endfor;/.test(str)){
+                return str.replace('endfor;', '}');
+            }
+
+            return str;
         };
 
         Template.prototype._translateNormal = function (str) {
@@ -104,7 +64,7 @@ define({
 
                 while ((matches = regex.exec(str)) !== null && startIndex < len) {
                     normal = str.slice(startIndex, matches.index);
-                    syntax = str.slice(matches.index, regex.lastIndex);
+                    syntax = str.slice(matches.index + 2, regex.lastIndex);
 
                     normal = this._translateNormal(normal);
 
@@ -114,7 +74,7 @@ define({
                      * will reset the lastIndex of the Regexp 'this.syntaxReg', so we need to save the lastIndex and reset it
                      * to before calling the String.replace
                      */
-                    startIndex = regex.lastIndex;
+                    startIndex = regex.lastIndex + 2;
                     syntax = this._translateSyntax(syntax);
                     regex.lastIndex = startIndex;
 
@@ -135,7 +95,7 @@ define({
         };
 
         Template.prototype._process = function () {
-            var fnContentHeader = 'context = context || {}; var output = \'\';';
+            var fnContentHeader = 'context = context || {}; var output = \'\'; var echo = function (str) { output+=str; };';
             var fnContentBody = this._makeFnContentBody(this.strTpl).join('\n');
             var fnContentFooter = 'return output;';
 
