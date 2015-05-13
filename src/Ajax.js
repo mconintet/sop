@@ -62,6 +62,8 @@ define({
             if (sop.isFunction(cfg['abort']))
                 this.on('abort', cfg.abort);
 
+            delete this.abort;
+
             this.id = sop.generateId();
 
             this._isStopped = false;
