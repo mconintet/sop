@@ -7,7 +7,8 @@ define({
          * @memberof sop
          * @constructor
          */
-        var Date = function () {};
+        var Date = function () {
+        };
 
         /**
          * Converts date into string according to some specific characters.
@@ -22,7 +23,7 @@ define({
          * <a href="http://php.net/manual/en/function.date.php" target="_blank">function.date.php</a>
          * @return {String} Converted string
          */
-        Date.format =  (function () {
+        Date.format = (function () {
             var fnMap = {
                 month: ["January", "February", "March",
                     "April", "May", "June", "July", "August",
@@ -122,6 +123,10 @@ define({
                 if (sop.isUndefined(opt)) {
                     opt = date;
                     date = new D();
+                }
+
+                if (typeof date === 'string') {
+                    date = new D(date.replace(/-/g, '/'));
                 }
 
                 return opt ? opt.replace(/\b(\w+)\b/g, function (match) {
