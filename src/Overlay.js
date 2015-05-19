@@ -48,6 +48,7 @@ define({
 
         Overlay.prototype.hide = function () {
             $(this._el).hide();
+            this.fire('hide');
         };
 
         return Overlay;
