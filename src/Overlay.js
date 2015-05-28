@@ -34,10 +34,15 @@ define({
 
         sop.extendProto(Overlay, sop.Observable);
 
+        var scrollHeight = document.documentElement.scrollHeight;
+        var scrollWidth = document.documentElement.scrollWidth;
+        var clientHeight = document.documentElement.clientHeight;
+        var clientWidth = document.documentElement.clientWidth;
+
         Overlay.prototype.fitSize = function () {
             $(this._el).css({
-                width: document.documentElement.scrollWidth,
-                height: document.documentElement.scrollHeight
+                width: Math.max(scrollWidth, clientWidth),
+                height: Math.max(scrollHeight, clientHeight)
             });
         };
 
