@@ -21,7 +21,11 @@ define({
             this._el.id = this.idPrefix + sop.generateId();
             $(this._el).css(this.css);
 
-            document.body.appendChild(this._el);
+            if (opt['appendTo']) {
+                opt['appendTo'].appendChild(this._el);
+            } else {
+                document.body.appendChild(this._el);
+            }
 
             this._el.addEventListener('click', function () {
                 this.hide();
