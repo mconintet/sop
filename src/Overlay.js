@@ -21,7 +21,7 @@ define({
             this._el.id = this.idPrefix + sop.generateId();
             $(this._el).css(this.css);
 
-            if (opt['appendTo']) {
+            if (opt && opt['appendTo']) {
                 opt['appendTo'].appendChild(this._el);
             } else {
                 document.body.appendChild(this._el);
