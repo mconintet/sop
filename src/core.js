@@ -501,7 +501,9 @@
 
             for (p in arg) {
                 if (arg.hasOwnProperty(p)) {
-                    if (S.isObject(arg[p]) && S.isObject(target[p])) {
+                    if (S.isObject(arg[p])) {
+                        if(!target[p]) target[p] = {};
+
                         S.extend(target[p], arg[p]);
                     } else {
                         target[p] = arg[p]

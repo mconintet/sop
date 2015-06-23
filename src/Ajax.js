@@ -1,6 +1,7 @@
 define({
     name: 'sop.Ajax',
-    init: function () {
+    requires: ['sop.MemCache'],
+    init: function (MemCache) {
         var defaultCfg = {
             url: '',
             type: 'GET',
@@ -12,8 +13,12 @@ define({
             complete: null,
             error: null,
             abort: null,
-            timeout: 0
+            timeout: 0,
+            memCache: false,
+            cacheTimeout: 0
         };
+
+        var memCache = new MemCache;
 
         /**
          * @class
@@ -71,7 +76,9 @@ define({
 
         sop.extendProto(Ajax, sop.Observable);
 
-        Ajax.prototype._initXhr = function () {
+        Ajax.prototype._prepareCfg = function () {
+            this.type = this.type.toUpperCase();
+
             if (!this.url)
                 console.error('opts.url can not empty!');
 
@@ -83,11 +90,17 @@ define({
             if (!sop.isNumeric(this.timeout) || (this.timeout = parseInt(this.timeout)) < 0)
                 console.error('opts.timeout must be positive number!');
 
-            var xhr = new XMLHttpRequest();
-
             if (this.type === 'GET' && this.data) {
                 this.url = this.url + '?' + this.data;
             }
+        };
+
+        Ajax.prototype.getCacheKey = function () {
+            return this.url + this.data;
+        };
+
+        Ajax.prototype._initXhr = function () {
+            var xhr = new XMLHttpRequest();
 
             xhr.open(this.type, this.url, !!this.async);
 
@@ -107,6 +120,10 @@ define({
                         if (sop.isUndefined(response) && me.dataType === 'json') {
                             me.fire('error', new Error('parse json error, response text is ' + this.responseText));
                         } else {
+                            if (me.memCache) {
+                                memCache.set(me.getCacheKey(), response);
+                            }
+
                             me.fire('success', response);
                         }
                     } else {
@@ -139,8 +156,18 @@ define({
          * Start to send request to remote server
          */
         Ajax.prototype.send = function () {
-            this._initXhr();
+            this._prepareCfg();
             this.fire('before');
+
+            if (this.memCache) {
+                var empty = '_@_empty_@_', data = memCache.get(this.getCacheKey(), empty);
+                if (data !== empty) {
+                    this.fire('success', data);
+                    return;
+                }
+            }
+
+            this._initXhr();
 
             Ajax.add(this);
             this.xhr.send(this.data);
@@ -258,6 +285,12 @@ define({
          */
         Ajax.create = function (cfg) {
             return new Ajax(cfg);
+        };
+
+        Ajax.run = function (cfg) {
+            var ajax = new Ajax(cfg);
+            ajax.send();
+            return ajax;
         };
 
         return Ajax;
