@@ -18,7 +18,7 @@ define({
             from = from || '000000';
             to = to || 'ffffff';
 
-            from = from.match(/\d{2}/g);
+            from = from.match(/\w{2}/g);
             to = to.match(/\w{2}/g);
 
             var r = parseInt(random(parseInt(from[0], 16), parseInt(to[0], 16))).toString(16);
